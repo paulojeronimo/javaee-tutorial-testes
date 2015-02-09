@@ -1,0 +1,87 @@
+--------------------------------------------------------------------
+# Rapid Java EE Application Development using Forge 2 (Tech Tip #17)
+# http://blog.arungupta.me/rapid-javaee-development-forge2/
+# https://issues.jboss.org/browse/FORGE-1706
+# @shell
+mkdir -p ~/exemplos/forge2
+cd !$
+forge
+
+# @forge
+project-new --named basic-javaee-forge --topLevelPackage org.forge.samples.javaee
+
+jpa-setup --container JBOSS_EAP6; rest-setup; constraint-setup; faces-setup; ejb-setup; scaffold-setup
+
+jpa-new-entity --named Author --targetPackage org.forge.samples.javaee.entities
+
+jpa-new-entity --named Book --targetPackage org.forge.samples.javaee.entities
+jpa-new-field --named title --type String --length 100
+jpa-new-field --named isbn --type String --length 30
+
+cd ../Author.java
+jpa-new-field --named name --type java.lang.String --length 50
+jpa-new-field --named books --type org.forge.samples.javaee.entities.Book --relationshipType One-to-Many
+constraint-add --onProperty name --constraint Size --max 50
+
+cd ../Book.java
+constraint-add --onProperty title --constraint Size --max 100
+constraint-add --onProperty isbn --constraint Size --max 30
+#constraint-add --onProperty isbn --constraint Pattern --regexp ^\d{9}[\d|X]$ 
+
+scaffold-generate --targets org.forge.samples.javaee.entities.Author
+scaffold-generate --targets org.forge.samples.javaee.entities.Book
+
+exit
+
+# @shell
+cd basic-javaee-forge
+tree | less
+mvn clean package
+jboss_start
+jboss_tail &
+cp target/basic-javaee-forge.war $JBOSS_HOME/standalone/deployments/
+browse http://localhost:8080/basic-javaee-forge/ &
+forge
+
+# @forge
+rest-generate-endpoints-from-entities --targets org.forge.samples.javaee.entities.Author --packageName org.forge.samples.javaee.rest
+
+rest-generate-endpoints-from-entities --targets org.forge.samples.javaee.entities.Book --packageName org.forge.samples.javaee.rest
+
+exit
+
+# @shell
+mvn clean package
+cp target/basic-javaee-forge.war $JBOSS_HOME/standalone/deployments/
+browse \
+http://localhost:8080/basic-javaee-forge/rest/authors \
+http://localhost:8080/basic-javaee-forge/rest/books &
+--------------------------------------------------------------------
+
+---------------------
+# AngularJS com Forge
+# https://github.com/forge/angularjs-addon
+
+# @shell
+forge
+
+# @forge
+addon-install-from-git --url https://github.com/forge/angularjs-addon.git
+project-new --named hello-angular
+jpa-setup
+jpa-new-entity --named Customer
+jpa-new-field --named fullName
+jpa-new-field --named age --type int
+constraint-setup --providers Generic\ Java\ EE
+constraint-add --onProperty fullName --constraint NotNull
+constraint-add --onProperty age --constraint Min --value 0
+scaffold-setup --provider AngularJS
+scaffold-generate --provider AngularJS --targets org.hello.angular.model.Customer
+exit
+
+# @shell
+cd hello-angular/
+mvn clean package
+cp target/hello-angular.war $JBOSS_HOME/standalone/deployments/
+browse http://localhost:8080/hello-angular/ &
+---------------------
