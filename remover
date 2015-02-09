@@ -1,0 +1,30 @@
+#!/bin/bash
+# Author: Paulo Jeronimo (email: paulojeronimo@gmail.com, twitter: @paulojeronimo)
+set +x
+
+BASEDIR=`cd $(dirname "$0"); echo -n $PWD`
+source "$BASEDIR"/config || exit 1
+source "$BASEDIR"/defaults || exit 1
+
+"$BASEDIR"/salvar
+
+[ $USER = vagrant ] && {
+    cd
+    f="$DOTFILES_DIR/remove"
+    [ -f "$f" ] && $f
+    find . -type l -delete
+    rm -rf .proxy .projetos .vagrant "$DOTFILES_DIR" "$AMBIENTE_DIR"
+    exit
+}
+
+PIDS=`sudo ps -ef | grep ^$AMBIENTE_USER | awk '{print $2}'`
+[ "$PIDS" ] && sudo kill -9 $PIDS
+
+sudo userdel -rf $AMBIENTE_USER &> /dev/null || {
+    echo "Falha ao remover o usuário $AMBIENTE_USER."
+    echo "O ambiente já não foi removido?"
+    exit
+}
+
+f=~/.bashrc; e="^xhost.*$AMBIENTE_USER$"
+grep -q "$e" $f && { grep -v "$e" $f | tee $f > /dev/null; }

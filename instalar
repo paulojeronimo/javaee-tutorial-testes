@@ -1,0 +1,82 @@
+#!/bin/bash
+# Author: Paulo Jeronimo (email: paulojeronimo@gmail.com, twitter: @paulojeronimo)
+set +x
+
+BASEDIR=`cd $(dirname "$0"); echo -n $PWD`
+source "$BASEDIR"/config || exit 1
+source "$BASEDIR"/defaults || exit 1
+
+BAIXA_ARQUIVO=`$BAIXA_INSTALADORES && echo -n --baixa-arquivo || echo -n --nao-baixa-arquivo`
+X_INSTALADO=`type xhost &> /dev/null && echo -n true || echo -n false`
+
+sudo sed -i '
+  s/^\(%wheel.*ALL\)/#\1/
+  s/^#.*\(%wheel.*NOPASSWD.*\)/\1/
+' /etc/sudoers
+
+if $USA_PROXY
+then
+    cat <<_EOF | sudo tee /etc/fedyrc
+export http_proxy=$http_proxy
+export https_proxy=$http_proxy
+export all_proxy=$http_proxy
+_EOF
+fi
+
+#sudo yum -y update
+#sudo yum -y install rsync tar unzip wget git tree dos2unix lsof redhat-lsb-core vim
+#curl -sSL https://satya164.github.io/fedy/fedy-installer | sudo bash
+#sudo fedy -e oracle_jdk
+
+if [ $USER != vagrant ]
+then
+    sudo useradd -m -s /bin/bash -G wheel $AMBIENTE_USER &> /dev/null || {
+        echo "Falha ao criar usuário $AMBIENTE_USER."
+        echo "O ambiente já não está instalado?"
+        exit 1
+    }
+
+    $X_INSTALADO && {
+        cmd="xhost +si:localuser:$AMBIENTE_USER"; $cmd
+        f=~/.bashrc; grep -q "xhost.*$AMBIENTE_USER" $f || { echo "$cmd" >> $f; }
+    }
+else
+    AMBIENTE_USER=vagrant
+    sudo sed -i 's/\(keepcache=\).*/\11/' /etc/yum.conf
+fi
+
+"$BASEDIR"/restaurar
+
+sudo -i -u $AMBIENTE_USER bash <<EOF
+executar_e_inserir_no_bashrc() {
+    local cmd="\$@"
+    eval \$cmd; echo \$cmd >> ~/.bashrc
+}
+
+$X_INSTALADO && echo 'export DISPLAY=:0' >> ~/.bashrc
+
+if $USA_PROXY
+then
+    f="$BASEDIR"/.proxy
+    sudo cp "\$f" ~/
+    sudo chown $AMBIENTE_USER: ~/.proxy
+    executar_e_inserir_no_bashrc "source ~/.proxy"
+    executar_e_inserir_no_bashrc "export INSTALA_OPCS+=\" --usa-proxy\""
+fi
+
+executar_e_inserir_no_bashrc "export INSTALA_OPCS+=\" $BAIXA_ARQUIVO\""
+
+git clone $GITHUB_DOTFILES
+${GITHUB_DOTFILES##*/}/install
+
+git config --global user.name '$GITHUB_NAME'
+git config --global user.email $GITHUB_EMAIL
+
+git clone $GITHUB_AMBIENTE
+[ \$USER = vagrant ] && { 
+    echo 'export PROJETOS_DIR=~/projetos' > ${GITHUB_AMBIENTE##*/}/ambiente.config
+}
+${GITHUB_AMBIENTE##*/}/instalar
+EOF
+
+# vim: set ts=4 sw=4 expandtab:

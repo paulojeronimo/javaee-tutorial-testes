@@ -1,0 +1,36 @@
+#!/bin/bash
+# Author: Paulo Jeronimo (email: paulojeronimo@gmail.com, twitter: @paulojeronimo)
+set +x
+
+BASEDIR=`cd $(dirname "$0"); echo -n $PWD`
+source "$BASEDIR"/config || exit 1
+source "$BASEDIR"/defaults || exit 1
+
+BACKUP_DIR=`basename $BASEDIR`.backup
+
+[ $USER = vagrant ] && {
+    for d in ${AMBIENTE_USER_DIRS[*]}
+    do 
+        mkdir -p "/$BACKUP_DIR/$d"
+        [ -L $d ] || ln -s "/$BACKUP_DIR/$d" ~/$d
+    done
+    f="/$BACKUP_DIR/$VAGRANT_BACKUP_TAR"; [ -f "$f" ] && sudo tar xvfP "$f"
+    exit
+}
+
+grep -q ^$AMBIENTE_USER /etc/passwd || { echo "Usuário $AMBIENTE_USER não existe!"; exit; }
+comum="$BASEDIR/../$BACKUP_DIR"
+if [ -d "$comum" ]
+then
+    cd "$comum"
+    sudo bash <<EOF
+for d in ${AMBIENTE_USER_DIRS[*]}
+do
+    [ \$d = projetos ] && continue
+    rsync -av --update \$d ~$AMBIENTE_USER/
+    chown -R $AMBIENTE_USER: ~$AMBIENTE_USER/\$d
+done
+EOF
+fi
+
+# vim: set ts=4 sw=4 expandtab:

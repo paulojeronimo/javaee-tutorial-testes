@@ -1,0 +1,58 @@
+#!/bin/bash
+# Author: Paulo Jeronimo (email: paulojeronimo@gmail.com, twitter: @paulojeronimo)
+
+BASEDIR=$(cd $(dirname "$0"); pwd)
+#GENDIR="$BASEDIR"/generated
+GENDIR="$BASEDIR"/.
+
+TUT=$(cd $(dirname "$0"); echo $(basename "$PWD"))
+ASCIIDOCTOR_PROJECTS_DIR=${ASCIIDOCTOR_PROJECTS_DIR:-~/Projects/github.com/asciidoctor}
+
+sed_i() {
+    case `uname` in
+        Darwin) sed -i '' "$@";;
+        Linux) sed -i "$@";;
+    esac    
+}
+
+_html() {
+    mkdir -p $GENDIR
+    asciidoctor tutorial.asciidoc -o $GENDIR/index.html
+}
+
+_pdf() {
+    pushd . &> /dev/null
+    mkdir -p "$ASCIIDOCTOR_PROJECTS_DIR"
+    cd "$ASCIIDOCTOR_PROJECTS_DIR"
+    [ -d asciidoctor-fopub ] || git clone https://github.com/asciidoctor/asciidoctor-fopub
+    popd &> /dev/null
+
+    export PATH="$ASCIIDOCTOR_PROJECTS_DIR"/asciidoctor-fopub:$PATH
+    asciidoctor -b docbook -d book -a data-uri! -o $GENDIR/$TUT.xml tutorial.asciidoc
+    fopub $GENDIR/$TUT.xml 
+    rm $GENDIR/$TUT.xml
+}
+
+_clean() {
+    # rm -rf $GENDIR
+    rm -rf $GENDIR/{index.html,$TUT.*}
+}
+
+_init() {
+    rm -rf .git
+    git init .
+    git add .
+    git commit -m 'primeiro commit'
+    git remote add origin git@github.com:paulojeronimo/$TUT.git
+    git push -u origin master
+}
+
+OP=${1:-html}
+if type _$OP &> /dev/null 
+then 
+    _$OP
+else 
+    echo "Opção \"$OP\" inexistente!"
+fi
+
+# vim: set ts=4 sw=4 expandtab:

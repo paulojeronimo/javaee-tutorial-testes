@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# se é para utilizar o proxy da rede, configure para true
+# (neste caso, não se esqueça de configurar o arquivo .proxy)
+USA_PROXY=false
+
+# se é para baixar os instaladores, configure para true
+BAIXA_INSTALADORES=true
+
+# suas informações no GitHub
+GITHUB_USER=paulojeronimo
+GITHUB_NAME='Paulo Jerônimo'
+GITHUB_EMAIL=paulojeronimo@gmail.com
+
+# projetos dotfiles e ambiente
+GITHUB_DOTFILES=http://github.com/$GITHUB_USER/dotfiles
+GITHUB_AMBIENTE=http://github.com/$GITHUB_USER/javaee-ambiente
+
+# usuário que executará o ambiente
+AMBIENTE_USER=javaee

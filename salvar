@@ -1,0 +1,41 @@
+#!/bin/bash
+# Author: Paulo Jeronimo (email: paulojeronimo@gmail.com, twitter: @paulojeronimo)
+set +x
+
+BASEDIR=`cd $(dirname "$0"); echo -n $PWD`
+source "$BASEDIR"/config || exit 1
+source "$BASEDIR"/defaults || exit 1
+
+BACKUP_DIR=`basename $BASEDIR`.backup
+
+[ $USER = vagrant ] && {
+    sudo tar cvfP "/$BACKUP_DIR/$VAGRANT_BACKUP_TAR" /var/cache
+    sudo tar rvfP "/$BACKUP_DIR/$VAGRANT_BACKUP_TAR" /fedy_dl
+    salvar-instaladores
+    exit
+}
+
+grep -q ^$AMBIENTE_USER /etc/passwd || { echo "Usuário $AMBIENTE_USER não existe!"; exit; }
+
+sudo -i -u $AMBIENTE_USER \
+$(eval echo -n ~$AMBIENTE_USER/"$AMBIENTE_DIR/scripts/salvar-instaladores")
+
+comum="$BASEDIR/../$BACKUP_DIR"
+mkdir -p "$comum" && cd "$comum"
+for d in ${AMBIENTE_USER_DIRS[*]}
+do
+    sudo bash <<EOF
+cd ~$AMBIENTE_USER
+if [ -L $d ]
+then
+    mkdir "$PWD/$d"
+    rsync -avR --update --delete $d/ "$PWD/$d"/
+elif [ -d $d ]
+then
+    rsync -avR --update --delete $d "$PWD"/
+fi
+EOF
+done
+sudo chown -R $USER: "$comum"
+
+# vim: ts=4 sw=4 expandtab:
