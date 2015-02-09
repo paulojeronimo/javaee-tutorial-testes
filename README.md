@@ -10,6 +10,6 @@
 
 ## Executando o tutorial
 
-* Siga os passos em `./generated/index.html`;
+* Siga os passos em `./index.html`;
 
 [Asciidoctor]:http://asciidoctor.org

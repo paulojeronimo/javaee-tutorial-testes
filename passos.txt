@@ -63,6 +63,8 @@ http://localhost:8080/basic-javaee-forge/rest/books &
 # https://github.com/forge/angularjs-addon
 
 # @shell
+mkdir -p ~/exemplos/forge2
+cd !$
 forge
 
 # @forge
@@ -77,6 +79,7 @@ constraint-add --onProperty fullName --constraint NotNull
 constraint-add --onProperty age --constraint Min --value 0
 scaffold-setup --provider AngularJS
 scaffold-generate --provider AngularJS --targets org.hello.angular.model.Customer
+rest-generate-endpoints-from-entities --targets org.hello.angular.model.Customer --packageName org.hello.angular.rest
 exit
 
 # @shell
