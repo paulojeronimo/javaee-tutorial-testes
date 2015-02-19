@@ -31,7 +31,7 @@ O conteúdo deste material foi projetado para ser apresentado, presencialmente p
 
 Os roteiros deste material foram produzidos para a execução, inicialmente, num ambiente Linux ({fedora-uri}[Fedora 21]). Seu  desenvolvimento foi realizado com base na instalação padrão de uma `workstation` nessa versão do Fedora. Contudo, esses roteiros também podem ser facilmente adaptados para a execução em outras distribuições Linux (como RHEL, CentOS, Debian ou Ubuntu) assim como no OS X e no Windows (num shell Cygwin). Para executar as tarefas deste material, espera-se que o estudante tenha facilidade para compreender e executar scripts no Bash.
 
-Os exemplos de código apresentados neste material são, primariamente, escritos em Java e JavaScript. Obviamente, espera-se que o estudante já tenha experiência nessas linguagens. Da mesma forma, o estudo detalhado das tecnologias testadas nos exemplos discutidos neste material está fora de seu escopo. Portanto, espera-se que o estudante já possua conhecimentos nas APIs e frameworks Java/Javascript que são alvo dos códigos de teste (exemplos: JPA, EJB, JAX-RS, AngularJS, etc).
+Os exemplos de código apresentados neste material são, primariamente, escritos em Java e JavaScript. Obviamente, acredita-se que o estudante já tenha experiência nessas linguagens. Da mesma forma, o estudo detalhado das tecnologias testadas nos exemplos discutidos neste material está fora de seu escopo. Portanto, julga-se que o estudante já possua conhecimentos nas APIs e frameworks Java/Javascript que são alvo dos códigos de teste (exemplos: JPA, EJB, JAX-RS, AngularJS, etc).
 
 Espera-se que o estudante, ao iniciar a leitura deste material, já possua algum embasamento em {junit-uri}[JUnit] e em TDD. Caso este não seja o caso, é recomendado que o estudante faça a leitura das referências básicas (marcadas como "__Ref. básica__") apresentadas ao final deste documento.
 
@@ -41,7 +41,7 @@ Está fora do escopo deste material apresentar um passo a passo completo para a 
 
 === Configurando o arquivo /etc/sudoers
 
-Para que a exeução de scripts dependentes do uso do comando `sudo` não fique solicitando uma senha, é preciso que o arquivo `/etc/sudoers` contenha linhas configuradas conforme a saída do comando abaixo:
+Para que a execução de scripts dependentes do uso do comando `sudo` não fique solicitando uma senha, é preciso que o arquivo `/etc/sudoers` contenha linhas configuradas conforme a saída apresentada na execução do comando abaixo:
 
 [source]
 ----
@@ -51,7 +51,7 @@ $ sudo grep wheel /etc/sudoers
 %wheel  ALL=(ALL)   NOPASSWD: ALL
 ----
 
-Para editar esse arquivo, deixando-o apresentável conforme a saída acima, execute:
+Para editar esse arquivo, deixando-o escrito da forma acima, execute:
 
 [source,bash]
 ----
@@ -60,14 +60,20 @@ sudo visudo
 
 === Trabalhando com o Fedora mais atual
 
-Todos os roteiros deste tutorial foram desenvolvidos com a versão mais atual dos pacotes do Fedora. Então, para ter estas mesmas versões em teu ambiente, execute o `update` dos pacotes:
+Todos os roteiros deste tutorial foram desenvolvidos com a versão mais atual dos pacotes do Fedora. Então, para ter estas mesmas versões em teu ambiente, execute o `update` dos pacotes. Se, antes desse passo, você desejar manter o cache dos pacotes que serão baixados em tua máquina, execute:
 
+[source,bash]
+----
+sudo sed -i 's/^\(keepcache=\)0/\11/g' /etc/yum.conf
+----
+
+Atualize os pacotes:
 [source,bash]
 ----
 sudo yum -y update
 ----
 
-Em seguida, reinicie o Fedora (para termos certeza que estaremos utilizando o último kernel disponível):
+Reinicie o Fedora (para termos certeza que estaremos utilizando o último kernel disponível):
 
 [source,bash]
 ----
@@ -76,11 +82,20 @@ sudo shutdown -r now
 
 Após a reinicialização da máquina, observe a seleção (automática e configurada no grub) da última versão do kernel, no momento do boot. 
 
-Logue-se com teu usuário e para manter apenas o kernel mais novo na lista de opções do grub, execute:
+Logue-se com o teu usuário e, para manter apenas o kernel mais novo na lista de opções do grub, execute:
 
 [source,bash]
 ----
 sudo package-cleanup -y --oldkernels --count=1
+----
+
+=== Instalando pacotes contendo utilitários que serão executados pelos scripts deste tutorial
+
+Os scripts que você executará mais a frente necessitam da instalação de alguns pacotes de utilitários. Então, execute a seguinte instrução:
+
+[source,bash]
+----
+sudo yum -y install vim redhat-lsb-core patch
 ----
 
 === Instalando o Oracle JDK
@@ -103,19 +118,20 @@ sudo alternatives --install /usr/bin/javaws javaws /usr/java/latest/jre/bin/java
 sudo alternatives --install /usr/lib64/mozilla/plugins/libjavaplugin.so libjavaplugin.so.x86_64 /usr/java/latest/jre/lib/amd64/libnpjp2.so 200000
 sudo alternatives --install /usr/bin/javac javac /usr/java/latest/bin/javac 200000
 sudo alternatives --install /usr/bin/jar jar /usr/java/latest/bin/jar 200000
-
-sudo alternatives --config java
-sudo alternatives --config javaws
-sudo alternatives --config libjavaplugin.so.x86_64
-sudo alternatives --config javac
-sudo alternatives --config jar
+sudo alternatives --set java /usr/java/latest/jre/bin/java
+sudo alternatives --set libjavaplugin.so.x86_64 /usr/java/latest/jre/lib/amd64/libnpjp2.so
 ----
 
 Pronto, agora testemos a execução de applets Java acessando a página https://www.java.com/pt_BR/download/installed.jsp["Verificar Versão do Java"] e também os sites dos bancos brasileiros.
 
-=== Instalando e configurando outros softwares proprietários
+=== Utilizando o Fedy para instalar softwares proprietários
 
-Particularmente, eu utilizo o Fedy para que a ele realize algumas configurações opcionais no Fedora e também a instale alguns softwares proprietários.
+Particularmente, eu utilizo o Fedy para que a ele realize algumas configurações no Fedora e também a instale alguns softwares proprietários. 
+
+[NOTE]
+====
+Essas instalações/configurações são opcionais no contexto deste tutorial.
+====
 
 Você pode obter a lista de configurações e instalações de softwares que o Fedy pode fazer através de sua interface gráfica. Alternativamente, pela linha de comando, você também pode obter esta listagem:
 
@@ -131,9 +147,14 @@ Para fazer minhas configurações e instalações através do Fedy eu executo o 
 sudo fedy -e adobe_flash core_fonts dvd_playback essential_soft font_rendering google_chrome google_talkplugin media_codecs nautilus_dropbox rpmfusion_repos skype_linux teamviewer_linux
 ----
 
+[NOTE]
+====
+Durante execução do comando acima, em meu caso, ocorreram erros na tentativa de instalação de `dvd_playback`. Isso ocorreu pois não foi encontrado o pacote `libdvdcss`.
+====
+
 == Montando um ambiente para este tutorial
 
-=== Baixe o JBoss EAP
+=== Baixando o JBoss EAP
 
 Clique nos links abaixo para fazer o download de alguns arquivos que utilizaremos (será solicitado um login):
 
@@ -148,7 +169,7 @@ mkdir -p ~/javaee-tutorial-testes.backup/javaee-ambiente.instaladores
 cp ~/Downloads/jboss-eap-6.3.0.* !$
 ----
 
-=== Instalando e configurando um ambiente para a construção, execução e testes de aplicações Java EE
+=== Criando um ambiente para a construção, execução e testes de aplicações Java EE
 
 Baixe e execute os scripts de montagem de ambiente através dos seguintes comandos:
 
@@ -247,7 +268,7 @@ eclipse_salvar
 salvar_instaladores
 ----
 
-== Um revisão da teoria (na prática) sobre TDD e BDD
+== Uma revisão, rápida e prática, sobre TDD e BDD
 
 Talvez você queira dar uma olhada numa http://a.paulojeronimo.info/capes/processo-de-testes/index.html[apresentação que fiz para a Capes, em 2013].
 
@@ -303,7 +324,7 @@ Compile o código e verifique que dá erro.
 javac MatematicaTest.java
 ----
 
-Conserte o erro e recompile o código:
+Conserte o erro, e recompile o código, criando a classe a seguir:
 
 [source,bash]
 ----
@@ -998,3 +1019,38 @@ Date: Thu, 05 Feb 2015 11:45:04 GMT
 .. http://enterprisewebbook.com/ch7_testdriven_js.html[Enterprise Web Development: From Desktop to Mobile]
 .. http://tddjs.com/[Test-Driven JavaScript Development]
 .. http://www.casadocodigo.com.br/products/livro-tdd[Test-Driven Development: Teste e Design no Mundo Real]
+
+== Extras
+
+=== Contribuindo com atualizações e/ou correções neste material
+
+Este material é gratuito e publicado, livremente, no site http://paulojeronimo.github.io/javaee-tutorial-testes. Esse site e a link:./javaee-tutorial-testes.pdf[sua impressão em formato pdf] são gerados a partir de um código fonte escrito no http://en.wikipedia.org/wiki/AsciiDoc[formato Asciidoc] através da ferramenta http://asciidoctor.org[Asciidoctor]. Um script bash (link:./build[build]) é utilizado para esta geração.
+
+São bem vindas as contribuições (atualizações e/ou correções) a este material, que é disponibilizado sob uma licença Creative Commons. Essas contribuições podem ser submetidas via https://help.github.com/articles/using-pull-requests/[pull request] no repositório do projeto.
+
+Para instalar o Asciidoctor, execute:
+
+[source,bash]
+----
+gem install asciidoctor
+----
+
+Esse comando necessita de um ambiente Ruby instalado. Se você ainda não possui esse ambiente em teu Fedora, a melhor maneira de criá-lo é instalar o http://rvm.io/[RVM] para, através dele, instalar o Ruby. Isso pode ser feito com os seguintes comandos:
+
+[source,bash]
+----
+gpg --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3
+curl -sSL https://get.rvm.io | bash -s stable
+source ~/.profile
+rvm install 2.2.0
+ruby --version
+----
+
+Estando no diretório que contém o seu clone do projeto (javaee-tutorial-testes), para gerar o arquivo link:./index.html[index.html] e, em seguida, o arquivo link:./javaee-tutorial-testes.pdf[javaee-tutorial-testes.pdf], execute os seguintes comandos:
+
+[source,bash]
+----
+./build
+./build pdf
+----
+

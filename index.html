@@ -426,14 +426,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel2">
 <li><a href="#_configurando_o_arquivo_etc_sudoers">3.1. Configurando o arquivo /etc/sudoers</a></li>
 <li><a href="#_trabalhando_com_o_fedora_mais_atual">3.2. Trabalhando com o Fedora mais atual</a></li>
-<li><a href="#_instalando_o_oracle_jdk">3.3. Instalando o Oracle JDK</a></li>
-<li><a href="#_instalando_e_configurando_outros_softwares_proprietários">3.4. Instalando e configurando outros softwares proprietários</a></li>
+<li><a href="#_instalando_pacotes_contendo_utilitários_que_serão_executados_pelos_scripts_deste_tutorial">3.3. Instalando pacotes contendo utilitários que serão executados pelos scripts deste tutorial</a></li>
+<li><a href="#_instalando_o_oracle_jdk">3.4. Instalando o Oracle JDK</a></li>
+<li><a href="#_utilizando_o_fedy_para_instalar_softwares_proprietários">3.5. Utilizando o Fedy para instalar softwares proprietários</a></li>
 </ul>
 </li>
 <li><a href="#_montando_um_ambiente_para_este_tutorial">4. Montando um ambiente para este tutorial</a>
 <ul class="sectlevel2">
-<li><a href="#_baixe_o_jboss_eap">4.1. Baixe o JBoss EAP</a></li>
-<li><a href="#_instalando_e_configurando_um_ambiente_para_a_construção_execução_e_testes_de_aplicações_java_ee">4.2. Instalando e configurando um ambiente para a construção, execução e testes de aplicações Java EE</a>
+<li><a href="#_baixando_o_jboss_eap">4.1. Baixando o JBoss EAP</a></li>
+<li><a href="#_criando_um_ambiente_para_a_construção_execução_e_testes_de_aplicações_java_ee">4.2. Criando um ambiente para a construção, execução e testes de aplicações Java EE</a>
 <ul class="sectlevel3">
 <li><a href="#_observando_a_estrutura_construída">4.2.1. Observando a estrutura construída</a></li>
 <li><a href="#_iniciando_e_parando_o_jboss">4.2.2. Iniciando e parando o JBoss</a></li>
@@ -442,7 +443,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 </ul>
 </li>
-<li><a href="#_um_revisão_da_teoria_na_prática_sobre_tdd_e_bdd">5. Um revisão da teoria (na prática) sobre TDD e BDD</a>
+<li><a href="#_uma_revisão_rápida_e_prática_sobre_tdd_e_bdd">5. Uma revisão, rápida e prática, sobre TDD e BDD</a>
 <ul class="sectlevel2">
 <li><a href="#_tdd_sem_junit_para_os_bravos">5.1. TDD sem JUnit, para os bravos</a></li>
 <li><a href="#_bdd_com_cucumber">5.2. BDD, com Cucumber</a></li>
@@ -462,6 +463,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#_test_driven_javascript_development">7. Test-Driven JavaScript Development</a></li>
 <li><a href="#_referências">8. Referências</a></li>
+<li><a href="#_extras">9. Extras</a>
+<ul class="sectlevel2">
+<li><a href="#_contribuindo_com_atualizações_e_ou_correções_neste_material">9.1. Contribuindo com atualizações e/ou correções neste material</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -487,7 +493,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Os roteiros deste material foram produzidos para a execução, inicialmente, num ambiente Linux (<a href="http://fedoraproject.org">Fedora 21</a>). Seu  desenvolvimento foi realizado com base na instalação padrão de uma <code>workstation</code> nessa versão do Fedora. Contudo, esses roteiros também podem ser facilmente adaptados para a execução em outras distribuições Linux (como RHEL, CentOS, Debian ou Ubuntu) assim como no OS X e no Windows (num shell Cygwin). Para executar as tarefas deste material, espera-se que o estudante tenha facilidade para compreender e executar scripts no Bash.</p>
 </div>
 <div class="paragraph">
-<p>Os exemplos de código apresentados neste material são, primariamente, escritos em Java e JavaScript. Obviamente, espera-se que o estudante já tenha experiência nessas linguagens. Da mesma forma, o estudo detalhado das tecnologias testadas nos exemplos discutidos neste material está fora de seu escopo. Portanto, espera-se que o estudante já possua conhecimentos nas APIs e frameworks Java/Javascript que são alvo dos códigos de teste (exemplos: JPA, EJB, JAX-RS, AngularJS, etc).</p>
+<p>Os exemplos de código apresentados neste material são, primariamente, escritos em Java e JavaScript. Obviamente, acredita-se que o estudante já tenha experiência nessas linguagens. Da mesma forma, o estudo detalhado das tecnologias testadas nos exemplos discutidos neste material está fora de seu escopo. Portanto, julga-se que o estudante já possua conhecimentos nas APIs e frameworks Java/Javascript que são alvo dos códigos de teste (exemplos: JPA, EJB, JAX-RS, AngularJS, etc).</p>
 </div>
 <div class="paragraph">
 <p>Espera-se que o estudante, ao iniciar a leitura deste material, já possua algum embasamento em <a href="http://junit.org">JUnit</a> e em TDD. Caso este não seja o caso, é recomendado que o estudante faça a leitura das referências básicas (marcadas como "<em>Ref. básica</em>") apresentadas ao final deste documento.</p>
@@ -503,7 +509,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect2">
 <h3 id="_configurando_o_arquivo_etc_sudoers">3.1. Configurando o arquivo /etc/sudoers</h3>
 <div class="paragraph">
-<p>Para que a exeução de scripts dependentes do uso do comando <code>sudo</code> não fique solicitando uma senha, é preciso que o arquivo <code>/etc/sudoers</code> contenha linhas configuradas conforme a saída do comando abaixo:</p>
+<p>Para que a execução de scripts dependentes do uso do comando <code>sudo</code> não fique solicitando uma senha, é preciso que o arquivo <code>/etc/sudoers</code> contenha linhas configuradas conforme a saída apresentada na execução do comando abaixo:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -514,7 +520,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="paragraph">
-<p>Para editar esse arquivo, deixando-o apresentável conforme a saída acima, execute:</p>
+<p>Para editar esse arquivo, deixando-o escrito da forma acima, execute:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -525,7 +531,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect2">
 <h3 id="_trabalhando_com_o_fedora_mais_atual">3.2. Trabalhando com o Fedora mais atual</h3>
 <div class="paragraph">
-<p>Todos os roteiros deste tutorial foram desenvolvidos com a versão mais atual dos pacotes do Fedora. Então, para ter estas mesmas versões em teu ambiente, execute o <code>update</code> dos pacotes:</p>
+<p>Todos os roteiros deste tutorial foram desenvolvidos com a versão mais atual dos pacotes do Fedora. Então, para ter estas mesmas versões em teu ambiente, execute o <code>update</code> dos pacotes. Se, antes desse passo, você desejar manter o cache dos pacotes que serão baixados em tua máquina, execute:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">sudo sed -i 's/^\(keepcache=\)0/\11/g' /etc/yum.conf</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Atualize os pacotes:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -533,7 +547,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="paragraph">
-<p>Em seguida, reinicie o Fedora (para termos certeza que estaremos utilizando o último kernel disponível):</p>
+<p>Reinicie o Fedora (para termos certeza que estaremos utilizando o último kernel disponível):</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -544,7 +558,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Após a reinicialização da máquina, observe a seleção (automática e configurada no grub) da última versão do kernel, no momento do boot.</p>
 </div>
 <div class="paragraph">
-<p>Logue-se com teu usuário e para manter apenas o kernel mais novo na lista de opções do grub, execute:</p>
+<p>Logue-se com o teu usuário e, para manter apenas o kernel mais novo na lista de opções do grub, execute:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -553,7 +567,18 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect2">
-<h3 id="_instalando_o_oracle_jdk">3.3. Instalando o Oracle JDK</h3>
+<h3 id="_instalando_pacotes_contendo_utilitários_que_serão_executados_pelos_scripts_deste_tutorial">3.3. Instalando pacotes contendo utilitários que serão executados pelos scripts deste tutorial</h3>
+<div class="paragraph">
+<p>Os scripts que você executará mais a frente necessitam da instalação de alguns pacotes de utilitários. Então, execute a seguinte instrução:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">sudo yum -y install vim redhat-lsb-core patch</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_instalando_o_oracle_jdk">3.4. Instalando o Oracle JDK</h3>
 <div class="paragraph">
 <p>Alguns sites, como os do <a href="http://www.bb.com.br">Banco do Brasil</a> e do <a href="http://www.itau.com.br">Itaú</a>, dependem da instalação do <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">Oracle JRE</a>. Então, é interessante ter esta JRE instalada. E, apesar do OpenJDK fazer parte da instalação padrão do Fedora 21, utilizaremos o <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">Oracle JDK</a>, neste material.</p>
 </div>
@@ -576,12 +601,8 @@ sudo alternatives --install /usr/bin/javaws javaws /usr/java/latest/jre/bin/java
 sudo alternatives --install /usr/lib64/mozilla/plugins/libjavaplugin.so libjavaplugin.so.x86_64 /usr/java/latest/jre/lib/amd64/libnpjp2.so 200000
 sudo alternatives --install /usr/bin/javac javac /usr/java/latest/bin/javac 200000
 sudo alternatives --install /usr/bin/jar jar /usr/java/latest/bin/jar 200000
-
-sudo alternatives --config java
-sudo alternatives --config javaws
-sudo alternatives --config libjavaplugin.so.x86_64
-sudo alternatives --config javac
-sudo alternatives --config jar</code></pre>
+sudo alternatives --set java /usr/java/latest/jre/bin/java
+sudo alternatives --set libjavaplugin.so.x86_64 /usr/java/latest/jre/lib/amd64/libnpjp2.so</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -589,9 +610,23 @@ sudo alternatives --config jar</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_instalando_e_configurando_outros_softwares_proprietários">3.4. Instalando e configurando outros softwares proprietários</h3>
+<h3 id="_utilizando_o_fedy_para_instalar_softwares_proprietários">3.5. Utilizando o Fedy para instalar softwares proprietários</h3>
 <div class="paragraph">
-<p>Particularmente, eu utilizo o Fedy para que a ele realize algumas configurações opcionais no Fedora e também a instale alguns softwares proprietários.</p>
+<p>Particularmente, eu utilizo o Fedy para que a ele realize algumas configurações no Fedora e também a instale alguns softwares proprietários.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Essas instalações/configurações são opcionais no contexto deste tutorial.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>Você pode obter a lista de configurações e instalações de softwares que o Fedy pode fazer através de sua interface gráfica. Alternativamente, pela linha de comando, você também pode obter esta listagem:</p>
@@ -609,6 +644,20 @@ sudo alternatives --config jar</code></pre>
 <pre class="highlight"><code class="language-bash" data-lang="bash">sudo fedy -e adobe_flash core_fonts dvd_playback essential_soft font_rendering google_chrome google_talkplugin media_codecs nautilus_dropbox rpmfusion_repos skype_linux teamviewer_linux</code></pre>
 </div>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Durante execução do comando acima, em meu caso, ocorreram erros na tentativa de instalação de <code>dvd_playback</code>. Isso ocorreu pois não foi encontrado o pacote <code>libdvdcss</code>.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 </div>
@@ -616,7 +665,7 @@ sudo alternatives --config jar</code></pre>
 <h2 id="_montando_um_ambiente_para_este_tutorial">4. Montando um ambiente para este tutorial</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_baixe_o_jboss_eap">4.1. Baixe o JBoss EAP</h3>
+<h3 id="_baixando_o_jboss_eap">4.1. Baixando o JBoss EAP</h3>
 <div class="paragraph">
 <p>Clique nos links abaixo para fazer o download de alguns arquivos que utilizaremos (será solicitado um login):</p>
 </div>
@@ -641,7 +690,7 @@ cp ~/Downloads/jboss-eap-6.3.0.* !$</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_instalando_e_configurando_um_ambiente_para_a_construção_execução_e_testes_de_aplicações_java_ee">4.2. Instalando e configurando um ambiente para a construção, execução e testes de aplicações Java EE</h3>
+<h3 id="_criando_um_ambiente_para_a_construção_execução_e_testes_de_aplicações_java_ee">4.2. Criando um ambiente para a construção, execução e testes de aplicações Java EE</h3>
 <div class="paragraph">
 <p>Baixe e execute os scripts de montagem de ambiente através dos seguintes comandos:</p>
 </div>
@@ -768,7 +817,7 @@ salvar_instaladores</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_um_revisão_da_teoria_na_prática_sobre_tdd_e_bdd">5. Um revisão da teoria (na prática) sobre TDD e BDD</h2>
+<h2 id="_uma_revisão_rápida_e_prática_sobre_tdd_e_bdd">5. Uma revisão, rápida e prática, sobre TDD e BDD</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Talvez você queira dar uma olhada numa <a href="http://a.paulojeronimo.info/capes/processo-de-testes/index.html">apresentação que fiz para a Capes, em 2013</a>.</p>
@@ -831,7 +880,7 @@ EOF</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Conserte o erro e recompile o código:</p>
+<p>Conserte o erro, e recompile o código, criando a classe a seguir:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1685,10 +1734,53 @@ Date: Thu, 05 Feb 2015 11:45:04 GMT</code></pre>
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_extras">9. Extras</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_contribuindo_com_atualizações_e_ou_correções_neste_material">9.1. Contribuindo com atualizações e/ou correções neste material</h3>
+<div class="paragraph">
+<p>Este material é gratuito e publicado, livremente, no site <a href="http://paulojeronimo.github.io/javaee-tutorial-testes" class="bare">http://paulojeronimo.github.io/javaee-tutorial-testes</a>. Esse site e a <a href="./javaee-tutorial-testes.pdf">sua impressão em formato pdf</a> são gerados a partir de um código fonte escrito no <a href="http://en.wikipedia.org/wiki/AsciiDoc">formato Asciidoc</a> através da ferramenta <a href="http://asciidoctor.org">Asciidoctor</a>. Um script bash (<a href="./build">build</a>) é utilizado para esta geração.</p>
+</div>
+<div class="paragraph">
+<p>São bem vindas as contribuições (atualizações e/ou correções) a este material, que é disponibilizado sob uma licença Creative Commons. Essas contribuições podem ser submetidas via <a href="https://help.github.com/articles/using-pull-requests/">pull request</a> no repositório do projeto.</p>
+</div>
+<div class="paragraph">
+<p>Para instalar o Asciidoctor, execute:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">gem install asciidoctor</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Esse comando necessita de um ambiente Ruby instalado. Se você ainda não possui esse ambiente em teu Fedora, a melhor maneira de criá-lo é instalar o <a href="http://rvm.io/">RVM</a> para, através dele, instalar o Ruby. Isso pode ser feito com os seguintes comandos:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">gpg --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3
+curl -sSL https://get.rvm.io | bash -s stable
+source ~/.profile
+rvm install 2.2.0
+ruby --version</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Estando no diretório que contém o seu clone do projeto (javaee-tutorial-testes), para gerar o arquivo <a href="./index.html">index.html</a> e, em seguida, o arquivo <a href="./javaee-tutorial-testes.pdf">javaee-tutorial-testes.pdf</a>, execute os seguintes comandos:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">./build
+./build pdf</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-02-09 05:06:42 BRST
+Last updated 2015-02-18 02:13:01 BRST
 </div>
 </div>
 </body>
