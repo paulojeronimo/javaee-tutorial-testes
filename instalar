@@ -2,7 +2,7 @@
 # Author: Paulo Jeronimo (email: paulojeronimo@gmail.com, twitter: @paulojeronimo)
 set +x
 
-BASEDIR=`cd $(dirname "$0"); echo -n $PWD`
+BASEDIR=$(cd "$(dirname "$0")"; echo -n $PWD)
 source "$BASEDIR"/config || exit 1
 source "$BASEDIR"/defaults || exit 1
 
@@ -73,9 +73,17 @@ git config --global user.name '$GITHUB_NAME'
 git config --global user.email $GITHUB_EMAIL
 
 git clone $GITHUB_AMBIENTE
+
+cat << '_EOF' > ${GITHUB_AMBIENTE##*/}/ambiente.config
+JBOSS_TYPE=jboss_eap
+_EOF
+
 [ \$USER = vagrant ] && { 
-    echo 'export PROJETOS_DIR=~/projetos' > ${GITHUB_AMBIENTE##*/}/ambiente.config
+cat << '_EOF' >> ${GITHUB_AMBIENTE##*/}/ambiente.config
+export PROJETOS_DIR=~/projetos
+_EOF
 }
+
 ${GITHUB_AMBIENTE##*/}/instalar
 EOF
 

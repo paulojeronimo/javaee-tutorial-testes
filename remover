@@ -2,7 +2,7 @@
 # Author: Paulo Jeronimo (email: paulojeronimo@gmail.com, twitter: @paulojeronimo)
 set +x
 
-BASEDIR=`cd $(dirname "$0"); echo -n $PWD`
+BASEDIR=$(cd "$(dirname "$0")"; echo -n $PWD)
 source "$BASEDIR"/config || exit 1
 source "$BASEDIR"/defaults || exit 1
 

@@ -16,8 +16,8 @@ sed_i() {
 }
 
 _html() {
-    mkdir -p $GENDIR
-    asciidoctor tutorial.asciidoc -o $GENDIR/index.html
+    mkdir -p "$GENDIR"
+    asciidoctor tutorial.asciidoc -o "$GENDIR"/index.html
 }
 
 _pdf() {
@@ -28,14 +28,14 @@ _pdf() {
     popd &> /dev/null
 
     export PATH="$ASCIIDOCTOR_PROJECTS_DIR"/asciidoctor-fopub:$PATH
-    asciidoctor -b docbook -d book -a data-uri! -o $GENDIR/$TUT.xml tutorial.asciidoc
-    fopub $GENDIR/$TUT.xml 
-    rm $GENDIR/$TUT.xml
+    asciidoctor -b docbook -d book -a data-uri! -o "$GENDIR"/$TUT.xml tutorial.asciidoc
+    fopub "$GENDIR"/$TUT.xml 
+    rm "$GENDIR"/$TUT.xml
 }
 
 _clean() {
     # rm -rf $GENDIR
-    rm -rf $GENDIR/{index.html,$TUT.*}
+    rm -rf "$GENDIR"/{index.html,$TUT.*}
 }
 
 _init() {

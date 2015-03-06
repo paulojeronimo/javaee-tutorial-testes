@@ -88,3 +88,55 @@ mvn clean package
 cp target/hello-angular.war $JBOSS_HOME/standalone/deployments/
 browse http://localhost:8080/hello-angular/ &
 ---------------------
+
+== Testando os quickstarts do JBoss EAP
+
+=== Descompactando e configurando o Maven
+
+[source,bash]
+----
+mkdir -p ~/exemplos
+cd !$
+unzip ~/instaladores/jboss-eap-6.3.0-quickstarts.zip
+cd jboss-eap-6.3.0-quickstarts
+cp settings.xml ~/.m2/
+----
+
+=== Iniciando e monitorando o log do JBoss
+
+[source,bash]
+----
+jboss_start
+jboss_tail &
+----
+
+=== Testando a aplicação helloworld
+
+Impantando:
+
+[source,bash]
+----
+cd helloworld
+mvn clean install jboss-as:deploy
+-----
+
+Verificando seu funcionamento:
+
+[source,bash]
+----
+browse http://localhost:8080/jboss-helloworld/
+----
+
+Desimplantando:
+
+[source,bash]
+----
+mvn jboss-as:undeploy
+----
+
+=== Testando a aplicação tasks-rs
+
+[source,bash]
+----
+cd ~/exemplos/jboss-eap-6.3.0-quickstarts/tasks-rs
+----

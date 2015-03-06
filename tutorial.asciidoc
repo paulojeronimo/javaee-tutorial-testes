@@ -29,7 +29,7 @@ O conteúdo deste material foi projetado para ser apresentado, presencialmente p
 
 == O que você precisa saber
 
-Os roteiros deste material foram produzidos para a execução, inicialmente, num ambiente Linux ({fedora-uri}[Fedora 21]). Seu  desenvolvimento foi realizado com base na instalação padrão de uma `workstation` nessa versão do Fedora. Contudo, esses roteiros também podem ser facilmente adaptados para a execução em outras distribuições Linux (como RHEL, CentOS, Debian ou Ubuntu) assim como no OS X e no Windows (num shell Cygwin). Para executar as tarefas deste material, espera-se que o estudante tenha facilidade para compreender e executar scripts no Bash.
+Os roteiros deste material foram produzidos para a execução, inicialmente, num ambiente Linux ({fedora-uri}[Fedora 21]). Seu desenvolvimento foi realizado com base na instalação padrão de uma `workstation` nessa versão do Fedora. Contudo, esses roteiros também podem ser facilmente adaptados para a execução em outras distribuições Linux (como RHEL, CentOS, Debian ou Ubuntu) assim como no OS X e no Windows (num shell Cygwin). Para executar as tarefas deste material, espera-se que o estudante tenha facilidade para compreender e executar scripts no Bash.
 
 Os exemplos de código apresentados neste material são, primariamente, escritos em Java e JavaScript. Obviamente, acredita-se que o estudante já tenha experiência nessas linguagens. Da mesma forma, o estudo detalhado das tecnologias testadas nos exemplos discutidos neste material está fora de seu escopo. Portanto, julga-se que o estudante já possua conhecimentos nas APIs e frameworks Java/Javascript que são alvo dos códigos de teste (exemplos: JPA, EJB, JAX-RS, AngularJS, etc).
 
@@ -177,8 +177,20 @@ Baixe e execute os scripts de montagem de ambiente através dos seguintes comand
 ----
 cd && git clone http://github.com/paulojeronimo/javaee-tutorial-testes
 cd javaee-tutorial-testes
+----
+
+Crie o arquivo `config` a partir do `config.exemplo` disponibilizado:
+
+[source,bash]
+----
 cp config.exemplo config
-vim config
+----
+
+O arquivo `config` contém informações sobre onde estão subprojetos utilizados neste tutorial. Se você fez forks desses projetos em tua conta no GitHub e fez adaptações neles, você poderá apontar, neste arquivo, esses teus forks.
+
+Instale o ambiente:
+[source,bash]
+----
 ./instalar
 ----
 
@@ -246,8 +258,13 @@ Para iniciar o Eclipse, execute:
 
 [source,bash]
 ----
-eclipse &> /dev/null &
+eclipse
 ----
+
+[NOTE]
+====
+O comando `eclipse` está configurado como um `alias` para `eclipse &> /dev/null &`.
+====
 
 Para instalar o http://tools.jboss.org/downloads/devstudio/index.html[JBoss Developer Studio], siga os passos descritos em http://tools.jboss.org/downloads/devstudio/luna/8.0.2.GA.html[na página do produto]. Alternativamente, se ao invés de utilizar o procedimento de instalação descrito nesta página você desejar fazer a instalação offline, siga os passos descritos a seguir.
 
@@ -943,13 +960,60 @@ Reexecute os testes:
 mvn test
 ----
 
-== Testes reais com o Arquillian
-
-=== TDD com Arquillian: desenvolvendo uma aplicação Java EE do zero
+== Testes "falsos", utilizando Mock Objects
 
 * Referências:
-** http://arquillian.org/guides/getting_started_pt/
-** http://arquillian.org/guides/get_started_faster_with_forge_pt/
+** http://www.desenvolvimentoagil.com.br/xp/praticas/tdd/mock_objects
+
+== Testes reais, utilizando o Arquillian
+
+== O projeto JBoss EAP Quickstarts
+
+* Referências:
+** https://github.com/jboss-developer/jboss-eap-quickstarts/
+
+=== Descompactando e configurando o Maven para testar os quickstarts
+
+[source,bash]
+----
+mkdir -p ~/exemplos
+cd !$
+unzip ~/instaladores/jboss-eap-6.3.0-quickstarts.zip
+cd jboss-eap-6.3.0.GA-quickstarts/
+cp settings.xml ~/.m2/
+----
+
+=== Iniciando e monitorando o log do JBoss
+
+[source,bash]
+----
+jboss_start
+jboss_tail &
+----
+
+=== Executando e testando a aplicação helloworld
+
+* Referências:
+** https://github.com/jboss-developer/jboss-eap-quickstarts/tree/6.3.x/helloworld
+
+==== Implatando
+
+[source,bash]
+----
+cd helloworld
+mvn clean install jboss-as:deploy
+----
+
+==== Verificando o funcionamento
+
+Abra a URL http://localhost:8080/jboss-helloworld/.
+
+==== Desimplantando
+
+[source,bash]
+----
+mvn jboss-as:undeploy
+----
 
 === Executando e testando a aplicação tasks-rs
 
@@ -958,22 +1022,33 @@ mvn test
 
 ==== Iniciando o JBoss e implantando a aplicação
 
-Inicie o JBoss:
+Se o JBoss não estiver em execução, execute:
 
 [source,bash]
 ----
 jboss_start
 ----
 
+Se o log do JBoss ainda não estiver sendo monitorado no shell corrente, execute:
+[source,bash]
+----
+jboss_tail &
+----
+
 Vá para o diretório da aplicação tasks-rs e crie um usuário para a aplicação. Execute os comandos abaixo:
 
 [source,bash]
 ----
-projetos && cd jboss-eap-6.3.0.GA-quickstarts/tasks-rs
+cd ~/exemplos/jboss-eap-6.3.0.GA-quickstarts/tasks-rs
 add-user.sh -a -u 'quickstartUser' -p 'quickstartPwd1!' -g 'guest'
+mvn clean install jboss-as:deploy
 ----
 
+O comando `add-user` fará a adição de um usuário que será utilizado no processo de autenticação da aplicação `tasks-rs`.
+
 ==== Testando a aplicação
+
+===== Criando uma tarefa
 
 Execute:
 
@@ -993,10 +1068,93 @@ Content-Length: 0
 Date: Thu, 05 Feb 2015 11:45:04 GMT
 ----
 
+===== Apresentando a tarefa no formato XML
+
+[source,bash]
+----
+curl -H "Accept: application/xml" -u 'quickstartUser:quickstartPwd1!' -X GET http://localhost:8080/jboss-tasks-rs/tasks/1
+----
+
+===== Apresentando todas as tarefa de um usuário
+
+[source,bash]
+----
+curl -H "Accept: application/xml" -u 'quickstartUser:quickstartPwd1!' -X GET http://localhost:8080/jboss-tasks-rs/tasks
+----
+
+===== Removendo uma tarefa
+
+Para remover a tarefa associada ao `id` 1, execute:
+
+[source,bash]
+----
+curl -i -u 'quickstartUser:quickstartPwd1!' -X DELETE http://localhost:8080/jboss-tasks-rs/tasks/1
+----
+
+Liste as tarefas associadas ao `quickstartUser`:
+
+[source,bash]
+----
+curl -u 'quickstartUser:quickstartPwd1!' -X GET http://localhost:8080/jboss-tasks-rs/tasks
+----
+
+===== Alterando o projeto para fazer a apresentação das tarefas no formato JSON
+
 === Executando e testando a aplicação kitchensink-angularjs
 
 * Referências:
 ** http://www.jboss.org/quickstarts/wfk/kitchensink-angularjs/
+
+==== Baixando o projeto
+
+==== Construindo e implantando
+
+==== Acessando a aplicação
+
+==== Desimplantando
+
+==== Executan os testes com o Arquillian
+
+==== Depurando a aplicação
+
+== Utilizando JBoss Forge e Arquillian
+
+* Referências:
+** http://forge.jboss.org
+
+=== Criando uma aplicação Java EE simples
+
+* Referências:
+** http://arquillian.org/guides/get_started_faster_with_forge_pt/
+
+=== Inserindo segurança com o uso do Picketlink
+
+* Referências:
+** http://forge.jboss.org/addon/org.picketlink.tools.forge:picketlink-forge-addon
+
+=== Utilizando AngularJS no frontend
+
+* Referências:
+** http://forge.jboss.org/addon/org.jboss.forge.addon:angularjs
+** https://www.youtube.com/watch?v=mg8Z7qHzpBA
+
+=== Testando JPA
+
+* Referências:
+** http://arquillian.org/guides/testing_java_persistence/
+
+=== Testando componentes EJB
+
+=== Testando web services REST
+
+=== Arquillian Drone e Graphene
+
+* Referências:
+** http://arquillian.org/blog/tags/drone/
+** http://arquillian.org/guides/functional_testing_using_graphene/
+** https://docs.jboss.org/author/display/ARQ/Drone
+
+== Desenvolvendo uma aplicação do zero, utilizando TDD, Forge e Arquillian
 
 == Test-Driven JavaScript Development
 
@@ -1008,6 +1166,8 @@ Date: Thu, 05 Feb 2015 11:45:04 GMT
 .. http://a.ladoservidor.com/tutoriais/arquillian-shrinkwrap/index.html[Tutorial: Testes reais de componentes Java EE com Arquillian e ShrinkWrap]
 .. http://a.paulojeronimo.info/3plans/docs/tutorial-javaee-6.html[3Plans.net - em ambiente Java EE 6 (JBoss EAP, OpenShift)]
 .. http://a.paulojeronimo.info/capes/processo-de-testes/index.html[Processo de desenvolvimento guiado pelos testes]
+. Projetos que tiveram a participação do autor:
+.. http://pensandoodireito.github.io/sislegis-site[SISLEGIS]
 . Artigos:
 .. http://pt.wikipedia.org/wiki/Test_Driven_Development[Test Driven Development] (__Ref. básica__)
 .. http://tdd.caelum.com.br/[TDD | Caelum] (__Ref. básica__)
