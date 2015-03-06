@@ -1113,7 +1113,7 @@ curl -u 'quickstartUser:quickstartPwd1!' -X GET http://localhost:8080/jboss-task
 
 ==== Desimplantando
 
-==== Executan os testes com o Arquillian
+==== Executando os testes com o Arquillian
 
 ==== Depurando a aplicação
 
