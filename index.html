@@ -424,11 +424,16 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_o_que_você_precisa_saber">2. O que você precisa saber</a></li>
 <li><a href="#_instalando_e_configurando_o_fedora">3. Instalando e configurando o Fedora</a>
 <ul class="sectlevel2">
-<li><a href="#_configurando_o_arquivo_etc_sudoers">3.1. Configurando o arquivo /etc/sudoers</a></li>
-<li><a href="#_trabalhando_com_o_fedora_mais_atual">3.2. Trabalhando com o Fedora mais atual</a></li>
-<li><a href="#_instalando_pacotes_contendo_utilitários_que_serão_executados_pelos_scripts_deste_tutorial">3.3. Instalando pacotes contendo utilitários que serão executados pelos scripts deste tutorial</a></li>
-<li><a href="#_instalando_o_oracle_jdk">3.4. Instalando o Oracle JDK</a></li>
-<li><a href="#_utilizando_o_fedy_para_instalar_softwares_proprietários">3.5. Utilizando o Fedy para instalar softwares proprietários</a></li>
+<li><a href="#_configurando_o_fedora_numa_máquina_real">3.1. Configurando o Fedora numa máquina real</a>
+<ul class="sectlevel3">
+<li><a href="#_configurando_o_arquivo_etc_sudoers">3.1.1. Configurando o arquivo /etc/sudoers</a></li>
+<li><a href="#_trabalhando_com_o_fedora_mais_atual">3.1.2. Trabalhando com o Fedora mais atual</a></li>
+<li><a href="#_instalando_pacotes_contendo_utilitários_que_serão_executados_pelos_scripts_deste_tutorial">3.1.3. Instalando pacotes contendo utilitários que serão executados pelos scripts deste tutorial</a></li>
+<li><a href="#_instalando_o_oracle_jdk">3.1.4. Instalando o Oracle JDK</a></li>
+<li><a href="#_utilizando_o_fedy_para_instalar_softwares_proprietários">3.1.5. Utilizando o Fedy para instalar softwares proprietários</a></li>
+</ul>
+</li>
+<li><a href="#_utilizando_o_fedora_numa_box_vagrant">3.2. Utilizando o Fedora numa box Vagrant</a></li>
 </ul>
 </li>
 <li><a href="#_montando_um_ambiente_para_este_tutorial">4. Montando um ambiente para este tutorial</a>
@@ -454,18 +459,18 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_o_projeto_jboss_eap_quickstarts">8. O projeto JBoss EAP Quickstarts</a>
 <ul class="sectlevel2">
 <li><a href="#_descompactando_e_configurando_o_maven_para_testar_os_quickstarts">8.1. Descompactando e configurando o Maven para testar os quickstarts</a></li>
-<li><a href="#_iniciando_e_monitorando_o_log_do_jboss">8.2. Iniciando e monitorando o log do JBoss</a></li>
-<li><a href="#_executando_e_testando_a_aplicação_helloworld">8.3. Executando e testando a aplicação helloworld</a>
+<li><a href="#_executando_e_testando_a_aplicação_helloworld">8.2. Executando e testando a aplicação helloworld</a>
 <ul class="sectlevel3">
-<li><a href="#_implatando">8.3.1. Implatando</a></li>
-<li><a href="#_verificando_o_funcionamento">8.3.2. Verificando o funcionamento</a></li>
-<li><a href="#_desimplantando">8.3.3. Desimplantando</a></li>
+<li><a href="#_iniciando_e_monitorando_o_log_do_jboss">8.2.1. Iniciando e monitorando o log do JBoss</a></li>
+<li><a href="#_implantando">8.2.2. Implantando</a></li>
+<li><a href="#_verificando_o_funcionamento">8.2.3. Verificando o funcionamento</a></li>
+<li><a href="#_desimplantando">8.2.4. Desimplantando</a></li>
 </ul>
 </li>
-<li><a href="#_executando_e_testando_a_aplicação_tasks_rs">8.4. Executando e testando a aplicação tasks-rs</a>
+<li><a href="#_executando_e_testando_a_aplicação_tasks_rs">8.3. Executando e testando a aplicação tasks-rs</a>
 <ul class="sectlevel3">
-<li><a href="#_iniciando_o_jboss_e_implantando_a_aplicação">8.4.1. Iniciando o JBoss e implantando a aplicação</a></li>
-<li><a href="#_testando_a_aplicação">8.4.2. Testando a aplicação</a>
+<li><a href="#_iniciando_o_jboss_e_implantando_a_aplicação">8.3.1. Iniciando o JBoss e implantando a aplicação</a></li>
+<li><a href="#_executandoo_a_aplicação">8.3.2. Executandoo a aplicação</a>
 <ul class="sectlevel4">
 <li><a href="#_criando_uma_tarefa">Criando uma tarefa</a></li>
 <li><a href="#_apresentando_a_tarefa_no_formato_xml">Apresentando a tarefa no formato XML</a></li>
@@ -474,16 +479,36 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_alterando_o_projeto_para_fazer_a_apresentação_das_tarefas_no_formato_json">Alterando o projeto para fazer a apresentação das tarefas no formato JSON</a></li>
 </ul>
 </li>
+<li><a href="#_testando_a_aplicação_com_o_arquillian">8.3.3. Testando a aplicação com o Arquillian</a>
+<ul class="sectlevel4">
+<li><a href="#_testando_numa_instância_jboss_já_em_execução">Testando numa instância JBoss já em execução</a></li>
+<li><a href="#_subindo_uma_instância_jboss_apenas_para_executar_os_testes">Subindo uma instância JBoss apenas para executar os testes</a></li>
 </ul>
 </li>
-<li><a href="#_executando_e_testando_a_aplicação_kitchensink_angularjs">8.5. Executando e testando a aplicação kitchensink-angularjs</a>
+<li><a href="#_entendendo_como_os_testes_com_o_arquillian_são_escritos">8.3.4. Entendendo como os testes com o Arquillian são escritos</a>
+<ul class="sectlevel4">
+<li><a href="#_o_pom_xml">O pom.xml</a></li>
+<li><a href="#_a_estrutura_de_diretórios_de_teste">A estrutura de diretórios de teste</a></li>
+<li><a href="#_o_arquivo_arquillian_xml">O arquivo arquillian.xml</a></li>
+<li><a href="#_os_arquivos_import_sql_test_persistence_xml_e_test_ds_xml">Os arquivos import.sql, test-persistence.xml e test-ds.xml</a></li>
+<li><a href="#_a_classe_defaultdeployment">A classe DefaultDeployment</a></li>
+<li><a href="#_na_classe_taskdaotest_a_anotação_runwith">Na classe TaskDaoTest: a anotação @RunWith</a></li>
+<li><a href="#_na_classe_taskdaotest_a_anotação_deployment">Na classe TaskDaoTest: a anotação @Deployment</a></li>
+<li><a href="#_na_classe_taskdaotest_a_anotação_insequence">Na classe TaskDaoTest: a anotação @InSequence</a></li>
+<li><a href="#_na_classe_taskdaotest_os_métodos_de_testes">Na classe TaskDaoTest: os métodos de testes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_executando_e_testando_a_aplicação_kitchensink_angularjs">8.4. Executando e testando a aplicação kitchensink-angularjs</a>
 <ul class="sectlevel3">
-<li><a href="#_baixando_o_projeto">8.5.1. Baixando o projeto</a></li>
-<li><a href="#_construindo_e_implantando">8.5.2. Construindo e implantando</a></li>
-<li><a href="#_acessando_a_aplicação">8.5.3. Acessando a aplicação</a></li>
-<li><a href="#_desimplantando_2">8.5.4. Desimplantando</a></li>
-<li><a href="#_executando_os_testes_com_o_arquillian">8.5.5. Executando os testes com o Arquillian</a></li>
-<li><a href="#_depurando_a_aplicação">8.5.6. Depurando a aplicação</a></li>
+<li><a href="#_baixando_o_projeto">8.4.1. Baixando o projeto</a></li>
+<li><a href="#_construindo_e_implantando">8.4.2. Construindo e implantando</a></li>
+<li><a href="#_acessando_a_aplicação">8.4.3. Acessando a aplicação</a></li>
+<li><a href="#_executando_os_testes_com_o_arquillian">8.4.4. Executando os testes com o Arquillian</a></li>
+<li><a href="#_executando_testes_funcionais_com_o_arquillian">8.4.5. Executando testes funcionais com o Arquillian</a></li>
+<li><a href="#_depurando_a_aplicação">8.4.6. Depurando a aplicação</a></li>
+<li><a href="#_desimplantando_2">8.4.7. Desimplantando</a></li>
 </ul>
 </li>
 </ul>
@@ -529,7 +554,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_o_que_você_precisa_saber">2. O que você precisa saber</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Os roteiros deste material foram produzidos para a execução, inicialmente, num ambiente Linux (<a href="http://fedoraproject.org">Fedora 21</a>). Seu desenvolvimento foi realizado com base na instalação padrão de uma <code>workstation</code> nessa versão do Fedora. Contudo, esses roteiros também podem ser facilmente adaptados para a execução em outras distribuições Linux (como RHEL, CentOS, Debian ou Ubuntu) assim como no OS X e no Windows (num shell Cygwin). Para executar as tarefas deste material, espera-se que o estudante tenha facilidade para compreender e executar scripts no Bash.</p>
+<p>Os roteiros deste material foram produzidos para a execução, inicialmente, num ambiente Linux (<a href="http://fedoraproject.org">Fedora 21</a>). Seu desenvolvimento foi realizado com base na instalação padrão de uma <code>workstation</code> nessa versão do Fedora numa máquina real ou numa <code>box</code> <a href="https://www.vagrantup.com/">Vagrant</a>. Contudo, esses roteiros também podem ser facilmente adaptados para a execução em outras distribuições Linux (como RHEL, CentOS, Debian ou Ubuntu) assim como no OS X e no Windows (num shell Cygwin). Para executar as tarefas deste material, espera-se que o estudante tenha facilidade para compreender e executar scripts no Bash.</p>
 </div>
 <div class="paragraph">
 <p>Os exemplos de código apresentados neste material são, primariamente, escritos em Java e JavaScript. Obviamente, acredita-se que o estudante já tenha experiência nessas linguagens. Da mesma forma, o estudo detalhado das tecnologias testadas nos exemplos discutidos neste material está fora de seu escopo. Portanto, julga-se que o estudante já possua conhecimentos nas APIs e frameworks Java/Javascript que são alvo dos códigos de teste (exemplos: JPA, EJB, JAX-RS, AngularJS, etc).</p>
@@ -543,10 +568,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_instalando_e_configurando_o_fedora">3. Instalando e configurando o Fedora</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Está fora do escopo deste material apresentar um passo a passo completo para a instalação do Fedora. Na Internet há vários materiais a respeito disso. Entretanto, após instalado, o estudante deverá se certificar de fazer configurações e instalações de pacotes recomendadas neste tópico.</p>
+<p>Está fora do escopo deste material apresentar um passo a passo completo para a instalação do Fedora e, por isso, sugerimos a utilização do Vagrant caso haja dificuldades nessa instalação. Em todo caso, na Internet há vários materiais a respeito disso e, após instalado, o estudante deverá se certificar de ter realizado as configurações e instalações de pacotes recomendadas neste tópico caso não esteja utilizando o Vagrant.</p>
 </div>
 <div class="sect2">
-<h3 id="_configurando_o_arquivo_etc_sudoers">3.1. Configurando o arquivo /etc/sudoers</h3>
+<h3 id="_configurando_o_fedora_numa_máquina_real">3.1. Configurando o Fedora numa máquina real</h3>
+<div class="sect3">
+<h4 id="_configurando_o_arquivo_etc_sudoers">3.1.1. Configurando o arquivo /etc/sudoers</h4>
 <div class="paragraph">
 <p>Para que a execução de scripts dependentes do uso do comando <code>sudo</code> não fique solicitando uma senha, é preciso que o arquivo <code>/etc/sudoers</code> contenha linhas configuradas conforme a saída apresentada na execução do comando abaixo:</p>
 </div>
@@ -567,8 +594,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_trabalhando_com_o_fedora_mais_atual">3.2. Trabalhando com o Fedora mais atual</h3>
+<div class="sect3">
+<h4 id="_trabalhando_com_o_fedora_mais_atual">3.1.2. Trabalhando com o Fedora mais atual</h4>
 <div class="paragraph">
 <p>Todos os roteiros deste tutorial foram desenvolvidos com a versão mais atual dos pacotes do Fedora. Então, para ter estas mesmas versões em teu ambiente, execute o <code>update</code> dos pacotes. Se, antes desse passo, você desejar manter o cache dos pacotes que serão baixados em tua máquina, execute:</p>
 </div>
@@ -605,8 +632,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_instalando_pacotes_contendo_utilitários_que_serão_executados_pelos_scripts_deste_tutorial">3.3. Instalando pacotes contendo utilitários que serão executados pelos scripts deste tutorial</h3>
+<div class="sect3">
+<h4 id="_instalando_pacotes_contendo_utilitários_que_serão_executados_pelos_scripts_deste_tutorial">3.1.3. Instalando pacotes contendo utilitários que serão executados pelos scripts deste tutorial</h4>
 <div class="paragraph">
 <p>Os scripts que você executará mais a frente necessitam da instalação de alguns pacotes de utilitários. Então, execute a seguinte instrução:</p>
 </div>
@@ -616,8 +643,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_instalando_o_oracle_jdk">3.4. Instalando o Oracle JDK</h3>
+<div class="sect3">
+<h4 id="_instalando_o_oracle_jdk">3.1.4. Instalando o Oracle JDK</h4>
 <div class="paragraph">
 <p>Alguns sites, como os do <a href="http://www.bb.com.br">Banco do Brasil</a> e do <a href="http://www.itau.com.br">Itaú</a>, dependem da instalação do <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">Oracle JRE</a>. Então, é interessante ter esta JRE instalada. E, apesar do OpenJDK fazer parte da instalação padrão do Fedora 21, utilizaremos o <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">Oracle JDK</a>, neste material.</p>
 </div>
@@ -648,8 +675,8 @@ sudo alternatives --set libjavaplugin.so.x86_64 /usr/java/latest/jre/lib/amd64/l
 <p>Pronto, agora testemos a execução de applets Java acessando a página <a href="https://www.java.com/pt_BR/download/installed.jsp">"Verificar Versão do Java"</a> e também os sites dos bancos brasileiros.</p>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_utilizando_o_fedy_para_instalar_softwares_proprietários">3.5. Utilizando o Fedy para instalar softwares proprietários</h3>
+<div class="sect3">
+<h4 id="_utilizando_o_fedy_para_instalar_softwares_proprietários">3.1.5. Utilizando o Fedy para instalar softwares proprietários</h4>
 <div class="paragraph">
 <p>Particularmente, eu utilizo o Fedy para que a ele realize algumas configurações no Fedora e também a instale alguns softwares proprietários.</p>
 </div>
@@ -699,6 +726,51 @@ sudo alternatives --set libjavaplugin.so.x86_64 /usr/java/latest/jre/lib/amd64/l
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_utilizando_o_fedora_numa_box_vagrant">3.2. Utilizando o Fedora numa box Vagrant</h3>
+<div class="paragraph">
+<p>A forma mais simples de iniciar a execução desse tutorial talvez seja pela execução de uma máquina virtual rodando o Fedora. Isso pode ser realizado de maneira bem rápida pelo uso do VirtualBox e do Vagrant. Nesse caso, os passos sugeridos nesse tutorial são:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Baixe e instale o <a href="https://www.virtualbox.org/">VirtualBox</a>;</p>
+</li>
+<li>
+<p>Baixe e instale o Vagrant;</p>
+</li>
+<li>
+<p>Baixe e instale o Git;</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Após ter instalado essas ferramentas, clone o projeto <code>javaee-tutorial-testes</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">cd &amp;&amp; git clone http://github.com/paulojeronimo/javaee-tutorial-testes
+cd javaee-tutorial-testes</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Antes de iniciar a <code>box</code> Vagrant, instale o plugin <code>vbguest</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">vagrant plugin install vagrant-vbguest</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Inicie a <code>box</code> com o comando <code>up</code> do Vagrant. Isto fará o download da <code>box</code> <code>chef/fedora21</code> (caso ela ainda não esteja no cache <code>~/.vagrant.d</code> da tua máquina) e deverá demorar um pouco dependendo da velocidade da tua Internet:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">vagrant up</code></pre>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div class="sect1">
 <h2 id="_montando_um_ambiente_para_este_tutorial">4. Montando um ambiente para este tutorial</h2>
@@ -706,7 +778,7 @@ sudo alternatives --set libjavaplugin.so.x86_64 /usr/java/latest/jre/lib/amd64/l
 <div class="sect2">
 <h3 id="_baixando_o_jboss_eap">4.1. Baixando o JBoss EAP</h3>
 <div class="paragraph">
-<p>Clique nos links abaixo para fazer o download de alguns arquivos que utilizaremos (será solicitado um login):</p>
+<p>O download do JBoss EAP exige um <code>login</code> de usuário e, por isso, não é realizado de forma automática. Então, clique nos links abaixo para fazer esse download (se você não tiver uma conta em jboss.org será solicitado a criar):</p>
 </div>
 <div class="ulist">
 <ul>
@@ -731,7 +803,7 @@ cp ~/Downloads/jboss-eap-6.3.0.* !$</code></pre>
 <div class="sect2">
 <h3 id="_criando_um_ambiente_para_a_construção_execução_e_testes_de_aplicações_java_ee">4.2. Criando um ambiente para a construção, execução e testes de aplicações Java EE</h3>
 <div class="paragraph">
-<p>Baixe e execute os scripts de montagem de ambiente através dos seguintes comandos:</p>
+<p>Se você está utilizando a <code>box</code> Vagrant desse tutorial, você já baixou o projeto <code>javaee-tutorial-testes</code>. Do contrário, faça seu download através dos seguintes comandos:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -748,10 +820,13 @@ cd javaee-tutorial-testes</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>O arquivo <code>config</code> contém informações sobre onde estão subprojetos utilizados neste tutorial. Se você fez forks desses projetos em tua conta no GitHub e fez adaptações neles, você poderá apontar, neste arquivo, esses teus forks.</p>
+<p>O arquivo <code>config</code> contém informações sobre onde estão subprojetos utilizados neste tutorial. Se você fez forks desses projetos em tua conta no GitHub e fez adaptações neles, você poderá editar esse arquivo e ajustá-lo para apontar para teus forks.</p>
 </div>
 <div class="paragraph">
-<p>Instale o ambiente:</p>
+<p>Instale o ambiente.</p>
+</div>
+<div class="paragraph">
+<p>Se estiver fazendo essa instalação numa máquina real, execute:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -759,16 +834,44 @@ cd javaee-tutorial-testes</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>O script <code>instalar</code> criará o usuário <code>javaee</code> e instalará um ambiente completo no <code>$HOME</code> desse usuário para que você possa realizar as tarefas apresentadas neste documento. Assim que terminada a instalação, você precisará se tornar este usuário para executar quaisquer tarefas.</p>
+<p>Se estiver fazendo a instalação numa <code>box</code> Vagrant (ela já deverá estar em execução), comande:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">vagrant ssh -c /vagrant/instalar</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>O script <code>instalar</code> criará o usuário <code>javaee</code> (se a instalação estiver ocorrendo numa máquina real) e instalará um ambiente completo no <code>$HOME</code> desse usuário para que você possa realizar as tarefas apresentadas neste documento. Assim que terminada a instalação, você precisará se tornar este usuário para executar quaisquer tarefas. Se a instalação estiver acontecendo numa <code>box</code> Vagrant, esse script não criará o usuário <code>javaee</code>: tudo estará no <code>$HOME</code> do próprio usuário <code>vagrant</code>.</p>
+</div>
+<div class="paragraph">
+<p>O provisionamento da máquina (real ou da <code>box</code> Vagrant) através do script <code>instalar</code> deixará a máquina pronta com todos os requisitos necessários para o início das tarefas desse tutorial. No caso da <code>box</code>, isso deverá demorar um pouco pois também será realizada a atualização dos pacotes instalados no Fedora. Esse script também fará o download de várias ferramentas que serão utilizadas neste tutorial.</p>
+</div>
+<div class="paragraph">
+<p>Se você estiver executando o script <code>instalar</code> na <code>box</code> Vagrant, ele fará o reboot da máquina quando encerrar. Isso porque pode ter havido, durante a atualização dos pacotes, um <code>update</code> do kernel. Nesse caso, serão necessários os seguintes comandos para que o VirtualBox Guest Additions volte a funcionar na <code>box</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">vagrant vbguest --do install
+vagrant reload</code></pre>
+</div>
 </div>
 <div class="sect3">
 <h4 id="_observando_a_estrutura_construída">4.2.1. Observando a estrutura construída</h4>
 <div class="paragraph">
-<p>Logue-se como usuário <code>javaee</code>:</p>
+<p>Se você estiver executando o Fedora fora do Vagrant, logue-se como usuário <code>javaee</code> através do seguinte comando:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-bash" data-lang="bash">sudo su - javaee</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Se, ao contrário, você estiver executando o Fedora através do Vagrant, logue-se como usuário <code>vagrant</code> através do seguinte comando:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">vagrant ssh</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -836,6 +939,23 @@ cd javaee-tutorial-testes</code></pre>
 </div>
 <div class="sect3">
 <h4 id="_iniciando_o_eclipse_e_instalando_o_jboss_developer_studio">4.2.3. Iniciando o Eclipse e instalando o JBoss Developer Studio</h4>
+<div class="paragraph">
+<p>Se você estiver fazendo a instalação numa máquina real poderá instalar o Eclipse e o JBoss Developer Studio nela.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Este tutorial ainda não foi ajustado para fazer uso de um ambiente gráfico numa <code>box</code> Vagrant e, por isso, esse tópico não se aplica nessa situação.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
 <p>Para iniciar o Eclipse, execute:</p>
 </div>
@@ -1645,7 +1765,12 @@ EOF</code></pre>
 <div class="sect1">
 <h2 id="_testes_reais_utilizando_o_arquillian">7. Testes reais, utilizando o Arquillian</h2>
 <div class="sectionbody">
-
+<div class="paragraph">
+<p>O Arquillian possibilita que executemos nossos testes dentro de um contêiner. Os testes são <em>reais</em>, o que significa dizer que não estamos testando uma interface "mockada" e, sim, uma implementação real dessa interface que pode estar sendo executada num servidor de aplicações.</p>
+</div>
+<div class="paragraph">
+<p>Para iniciarmos o aprendizado de Arquillian, faremos uso dos exemplos disponibilizados no projeto <code>JBoss EAP Quickstarts</code>.</p>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -1678,16 +1803,7 @@ cp settings.xml ~/.m2/</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_iniciando_e_monitorando_o_log_do_jboss">8.2. Iniciando e monitorando o log do JBoss</h3>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">jboss_start
-jboss_tail &amp;</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_executando_e_testando_a_aplicação_helloworld">8.3. Executando e testando a aplicação helloworld</h3>
+<h3 id="_executando_e_testando_a_aplicação_helloworld">8.2. Executando e testando a aplicação helloworld</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -1703,7 +1819,16 @@ jboss_tail &amp;</code></pre>
 </ul>
 </div>
 <div class="sect3">
-<h4 id="_implatando">8.3.1. Implatando</h4>
+<h4 id="_iniciando_e_monitorando_o_log_do_jboss">8.2.1. Iniciando e monitorando o log do JBoss</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">jboss_start
+jboss_tail &amp;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_implantando">8.2.2. Implantando</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-bash" data-lang="bash">cd helloworld
@@ -1712,13 +1837,13 @@ mvn clean install jboss-as:deploy</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_verificando_o_funcionamento">8.3.2. Verificando o funcionamento</h4>
+<h4 id="_verificando_o_funcionamento">8.2.3. Verificando o funcionamento</h4>
 <div class="paragraph">
 <p>Abra a URL <a href="http://localhost:8080/jboss-helloworld/" class="bare">http://localhost:8080/jboss-helloworld/</a>.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_desimplantando">8.3.3. Desimplantando</h4>
+<h4 id="_desimplantando">8.2.4. Desimplantando</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-bash" data-lang="bash">mvn jboss-as:undeploy</code></pre>
@@ -1727,7 +1852,7 @@ mvn clean install jboss-as:deploy</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_executando_e_testando_a_aplicação_tasks_rs">8.4. Executando e testando a aplicação tasks-rs</h3>
+<h3 id="_executando_e_testando_a_aplicação_tasks_rs">8.3. Executando e testando a aplicação tasks-rs</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -1743,7 +1868,7 @@ mvn clean install jboss-as:deploy</code></pre>
 </ul>
 </div>
 <div class="sect3">
-<h4 id="_iniciando_o_jboss_e_implantando_a_aplicação">8.4.1. Iniciando o JBoss e implantando a aplicação</h4>
+<h4 id="_iniciando_o_jboss_e_implantando_a_aplicação">8.3.1. Iniciando o JBoss e implantando a aplicação</h4>
 <div class="paragraph">
 <p>Se o JBoss não estiver em execução, execute:</p>
 </div>
@@ -1775,27 +1900,12 @@ mvn clean install jboss-as:deploy</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_testando_a_aplicação">8.4.2. Testando a aplicação</h4>
+<h4 id="_executandoo_a_aplicação">8.3.2. Executandoo a aplicação</h4>
 <div class="sect4">
 <h5 id="_criando_uma_tarefa">Criando uma tarefa</h5>
-<div class="paragraph">
-<p>Execute:</p>
-</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-bash" data-lang="bash">curl -i -u 'quickstartUser:quickstartPwd1!' -H "Content-Length: 0" -X POST http://localhost:8080/jboss-tasks-rs/tasks/task1</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Verifique a resposta esperada:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code>HTTP/1.1 201 Created
-Server: Apache-Coyote/1.1
-Location: http://localhost:8080/jboss-tasks-rs/tasks/1
-Content-Length: 0
-Date: Thu, 05 Feb 2015 11:45:04 GMT</code></pre>
 </div>
 </div>
 </div>
@@ -1836,12 +1946,275 @@ Date: Thu, 05 Feb 2015 11:45:04 GMT</code></pre>
 </div>
 <div class="sect4">
 <h5 id="_alterando_o_projeto_para_fazer_a_apresentação_das_tarefas_no_formato_json">Alterando o projeto para fazer a apresentação das tarefas no formato JSON</h5>
+<div class="paragraph">
+<p>TODO</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_testando_a_aplicação_com_o_arquillian">8.3.3. Testando a aplicação com o Arquillian</h4>
+<div class="sect4">
+<h5 id="_testando_numa_instância_jboss_já_em_execução">Testando numa instância JBoss já em execução</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">mvn clean test -Parq-jbossas-remote</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_subindo_uma_instância_jboss_apenas_para_executar_os_testes">Subindo uma instância JBoss apenas para executar os testes</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">jboss_stop
+mvn clean test -Parq-jbossas-managed</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_entendendo_como_os_testes_com_o_arquillian_são_escritos">8.3.4. Entendendo como os testes com o Arquillian são escritos</h4>
+<div class="sect4">
+<h5 id="_o_pom_xml">O pom.xml</h5>
+<div class="paragraph">
+<p>As linhas geradas na execução do comando abaixo demonstram a configuração realizada no <code>pom.xml</code> para a ativação do <code>profile</code> <code>arq-jbossas-managed</code>. Esse <code>profile</code>, como vimos, é utilizado na execução do Maven para a realização de testes subindo uma nova instância do JBoss. Execute:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">sed -n '186,200p' pom.xml</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Esta é a saída gerada:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">        &lt;profile&gt;
+            &lt;!-- An optional Arquillian testing profile that executes tests
+                in your JBoss EAP instance --&gt;
+            &lt;!-- This profile will start a new JBoss EAP instance, and execute
+                the test, shutting it down when done --&gt;
+            &lt;!-- Run with: mvn clean test -Parq-jbossas-managed --&gt;
+            &lt;id&gt;arq-jbossas-managed&lt;/id&gt;
+            &lt;dependencies&gt;
+                &lt;dependency&gt;
+                    &lt;groupId&gt;org.jboss.as&lt;/groupId&gt;
+                    &lt;artifactId&gt;jboss-as-arquillian-container-managed&lt;/artifactId&gt;
+                    &lt;scope&gt;test&lt;/scope&gt;
+                &lt;/dependency&gt;
+            &lt;/dependencies&gt;
+        &lt;/profile&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As linhas de 202 a 214 apresentam a definição do <code>profile</code> <code>arq-jbossas-remote</code>.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_a_estrutura_de_diretórios_de_teste">A estrutura de diretórios de teste</h5>
+<div class="listingblock">
+<div class="content">
+<pre>$ tree src/test/
+src/test/
+|-- java
+|   `-- org
+|       `-- jboss
+|           `-- as
+|               `-- quickstarts
+|                   `-- tasksrs
+|                       |-- DefaultDeployment.java
+|                       |-- TaskDaoTest.java
+|                       `-- UserDaoTest.java
+`-- resources
+    |-- arquillian.xml
+    |-- import.sql
+    |-- META-INF
+    |   `-- test-persistence.xml
+    `-- test-ds.xml
 
+8 directories, 7 files</pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_o_arquivo_arquillian_xml">O arquivo arquillian.xml</h5>
+<div class="paragraph">
+<p>Esse arquivo é utilizado para a realização de configurações no arquillian. Veja seu conteúdo:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">vim src/test/resources/arquillian.xml</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_os_arquivos_import_sql_test_persistence_xml_e_test_ds_xml">Os arquivos import.sql, test-persistence.xml e test-ds.xml</h5>
+<div class="paragraph">
+<p>Quando o JBoss encontra o arquivo <code>import.sql</code> no CLASSPATH (dentro de um pacote nesse caso) ele tenta, automaticamente, utilizar o seu conteúdo para popular a base de dados referenciada pelo Datasource configurado em <code>test-ds.xml</code>. As configurações JPA para o ambiente de teste são realizadas no arquivo <code>test-persistence.xml</code>.</p>
+</div>
+<div class="paragraph">
+<p>Veja o conteúdo de cada um desses arquivos:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">cat src/test/resources/import.sql
+cat src/test/resources/test-ds.xml
+cat src/test/resources/META-INF/test-persistence.xml</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_a_classe_defaultdeployment">A classe DefaultDeployment</h5>
+<div class="paragraph">
+<p>Essa classe contém métodos que serão utilizados pelo Arquillian (nos Testcases) que, através do ShrinkWrap, montaram o pacote com os recursos necessários para a execução dos testes.</p>
+</div>
+<div class="paragraph">
+<p>As linhas geradas na saída do comando abaixo apresentam os principais métodos dessa classe. Execute:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">sed -n '36,54p' src/test/java/org/jboss/as/quickstarts/tasksrs/DefaultDeployment.java</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Esta é a saída gerada:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">    public DefaultDeployment() {
+        webArchive = ShrinkWrap.create(WebArchive.class, "test.war").addAsWebInfResource(
+                new File(WEBAPP_SRC, "WEB-INF/beans.xml"));
+    }
+
+    public DefaultDeployment withPersistence() {
+        webArchive = webArchive.addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(
+                "test-ds.xml", "test-ds.xml");
+        return this;
+    }
+
+    public DefaultDeployment withImportedData() {
+        webArchive = webArchive.addAsResource("import.sql");
+        return this;
+    }
+
+    public WebArchive getArchive() {
+        return webArchive;
+    }</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_na_classe_taskdaotest_a_anotação_runwith">Na classe TaskDaoTest: a anotação @RunWith</h5>
+<div class="paragraph">
+<p>A anotação <code>@RunWith(Arquillian.class)</code> é utilizada para informar ao JUnit que a execução da classe de teste será realizada através do Arquillian. Essa anotação é colocada no escopo da classe, conforme apresentado na saída do comando abaixo:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">sed -n '41,42p' src/test/java/org/jboss/as/quickstarts/tasksrs/TaskDaoTest.java</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@RunWith(Arquillian.class)
+public class TaskDaoTest {</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_na_classe_taskdaotest_a_anotação_deployment">Na classe TaskDaoTest: a anotação @Deployment</h5>
+<div class="paragraph">
+<p>A anotação <code>@Deployment</code> é inserida num método estático para informar ao Arquillian o método responsável pela geração do pacote que será implantado para a realização dos testes. Antes da execução dos métodos de teste, o Arquillian se responsabiliza, através da execução desse método, de fazer o deploy de um pacote no contêiner, com todos os recursos necessários para a execução dos testes.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">sed -n '44,48p' !$</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">    @Deployment
+    public static WebArchive deployment() throws IllegalArgumentException, FileNotFoundException {
+        return new DefaultDeployment().withPersistence().withImportedData().getArchive()
+                .addClasses(Resources.class, User.class, UserDao.class, Task.class, TaskDao.class, TaskDaoImpl.class);
+    }</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_na_classe_taskdaotest_a_anotação_insequence">Na classe TaskDaoTest: a anotação @InSequence</h5>
+<div class="paragraph">
+<p>A anotação <code>@InSequence</code> é particular ao Arquillian e possibilita a ordenação do fluxo de execução dos métodos anotados com <code>@Test</code> (anotação do JUnit) já que esse não oferece esta possibilidade. Então, através do uso dessa anotação podemos dizer ao JUnit a ordem em que desejamos a execução dos métodos de teste.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_na_classe_taskdaotest_os_métodos_de_testes">Na classe TaskDaoTest: os métodos de testes</h5>
+<div class="paragraph">
+<p>Apesar de não utilizar nenhuma ferramenta para BDD, os métodos de teste na classe <code>TaskDaoTest</code> são codificados seguem essa abordagem. No código é possível observamos comentários indicando o que seria o "given", o "when" e o "then". Além disso, os nomes dos métodos são bastante significativos. Observemos alguns:</p>
+</div>
+<div class="paragraph">
+<p>Código de teste para "um usuário deveria ser criado com uma tarefa anexada":</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">sed -n '64,80p' !$</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">    @Test
+    @InSequence(1)
+    public void user_should_be_created_with_one_task_attached() throws Exception {
+        // given
+        User user = new User("New user");
+        Task task = new Task("New task");
+
+        // when
+        em.persist(user);
+        taskDao.createTask(user, task);
+        List&lt;Task&gt; userTasks = em.createQuery("SELECT t FROM Task t WHERE t.owner = :owner", Task.class)
+                .setParameter("owner", user).getResultList();
+
+        // then
+        assertEquals(1, userTasks.size());
+        assertEquals(task, userTasks.get(0));
+    }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Código de teste para "uma faixa de tarefas deveria ser provida por taskDao":</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">sed -n '92,104p'!$</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">    @Test
+    @InSequence(3)
+    public void range_of_tasks_should_be_provided_by_taskDao() {
+        // when
+        List&lt;Task&gt; headOfTasks = taskDao.getRange(detachedUser, 0, 1);
+        List&lt;Task&gt; tailOfTasks = taskDao.getRange(detachedUser, 1, 1);
+
+        // then
+        assertEquals(1, headOfTasks.size());
+        assertEquals(1, tailOfTasks.size());
+        assertTrue(headOfTasks.get(0).getTitle().contains("first"));
+        assertTrue(tailOfTasks.get(0).getTitle().contains("second"));
+    }</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_executando_e_testando_a_aplicação_kitchensink_angularjs">8.5. Executando e testando a aplicação kitchensink-angularjs</h3>
+<h3 id="_executando_e_testando_a_aplicação_kitchensink_angularjs">8.4. Executando e testando a aplicação kitchensink-angularjs</h3>
+<div class="paragraph">
+<p>O projeto kitchensink-angularjs demonstra o uso das tecnologias AngularJS e JAX-RS e, além disso, apresenta um bom código para o estudo do Arquillian.</p>
+</div>
+<div class="paragraph">
+<p>Ele é implantável com o Maven, utiliza Java EE 6 e as APIs CDI 1.0, EJB 3.1, JPA 2.0 e Bean Validation 1.0.</p>
+</div>
 <div class="ulist">
 <ul>
 <li>
@@ -1857,28 +2230,52 @@ Date: Thu, 05 Feb 2015 11:45:04 GMT</code></pre>
 </ul>
 </div>
 <div class="sect3">
-<h4 id="_baixando_o_projeto">8.5.1. Baixando o projeto</h4>
+<h4 id="_baixando_o_projeto">8.4.1. Baixando o projeto</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">cd ~/exemplos
+git clone https://github.com/jboss-developer/jboss-wfk-quickstarts
+cd jboss-wfk-quickstarts/kitchensink-angularjs</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_construindo_e_implantando">8.4.2. Construindo e implantando</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">mvn clean package jboss-as:deploy</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_acessando_a_aplicação">8.4.3. Acessando a aplicação</h4>
+<div class="paragraph">
+<p>Abra a URL <a href="http://localhost:8080/jboss-kitchensink-angularjs/" class="bare">http://localhost:8080/jboss-kitchensink-angularjs/</a></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_executando_os_testes_com_o_arquillian">8.4.4. Executando os testes com o Arquillian</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">mvn clean test -Parq-jbossas-remote</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_executando_testes_funcionais_com_o_arquillian">8.4.5. Executando testes funcionais com o Arquillian</h4>
 
 </div>
 <div class="sect3">
-<h4 id="_construindo_e_implantando">8.5.2. Construindo e implantando</h4>
+<h4 id="_depurando_a_aplicação">8.4.6. Depurando a aplicação</h4>
 
 </div>
 <div class="sect3">
-<h4 id="_acessando_a_aplicação">8.5.3. Acessando a aplicação</h4>
-
+<h4 id="_desimplantando_2">8.4.7. Desimplantando</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">mvn jboss-as:undeploy</code></pre>
 </div>
-<div class="sect3">
-<h4 id="_desimplantando_2">8.5.4. Desimplantando</h4>
-
 </div>
-<div class="sect3">
-<h4 id="_executando_os_testes_com_o_arquillian">8.5.5. Executando os testes com o Arquillian</h4>
-
-</div>
-<div class="sect3">
-<h4 id="_depurando_a_aplicação">8.5.6. Depurando a aplicação</h4>
-
 </div>
 </div>
 </div>
@@ -1973,7 +2370,20 @@ Date: Thu, 05 Feb 2015 11:45:04 GMT</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_testando_componentes_ejb">9.5. Testando componentes EJB</h3>
-
+<div class="ulist">
+<ul>
+<li>
+<p>Referências:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="http://arquillian.org/guides/getting_started_rinse_and_repeat_pt/" class="bare">http://arquillian.org/guides/getting_started_rinse_and_repeat_pt/</a></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_testando_web_services_rest">9.6. Testando web services REST</h3>
@@ -2144,7 +2554,7 @@ ruby --version</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-03-06 15:34:47 BRT
+Last updated 2015-03-13 09:37:01 BRT
 </div>
 </div>
 </body>

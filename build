@@ -1,7 +1,7 @@
 #!/bin/bash
 # Author: Paulo Jeronimo (email: paulojeronimo@gmail.com, twitter: @paulojeronimo)
 
-BASEDIR=$(cd $(dirname "$0"); pwd)
+BASEDIR=$(cd "$(dirname "$0")"; echo -n $PWD)
 #GENDIR="$BASEDIR"/generated
 GENDIR="$BASEDIR"/.
 

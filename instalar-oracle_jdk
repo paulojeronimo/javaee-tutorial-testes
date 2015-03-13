@@ -1,0 +1,13 @@
+#!/bin/bash
+
+curl -sSL https://satya164.github.io/fedy/fedy-installer | sudo bash
+
+sudo fedy -e oracle_jre oracle_jdk
+
+sudo alternatives --install /usr/bin/java java /usr/java/latest/jre/bin/java 200000
+sudo alternatives --install /usr/bin/javaws javaws /usr/java/latest/jre/bin/javaws 200000
+sudo alternatives --install /usr/lib64/mozilla/plugins/libjavaplugin.so libjavaplugin.so.x86_64 /usr/java/latest/jre/lib/amd64/libnpjp2.so 200000
+sudo alternatives --install /usr/bin/javac javac /usr/java/latest/bin/javac 200000
+sudo alternatives --install /usr/bin/jar jar /usr/java/latest/bin/jar 200000
+sudo alternatives --set java /usr/java/latest/jre/bin/java
+sudo alternatives --set libjavaplugin.so.x86_64 /usr/java/latest/jre/lib/amd64/libnpjp2.so

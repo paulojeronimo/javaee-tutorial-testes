@@ -18,3 +18,9 @@ $AMBIENTE_USER-ambiente.instaladores
 # nome do arquivo de backup utilizado pelo Vagrant
 #   quando são chamados os scripts salvar e restaurar:
 VAGRANT_BACKUP_TAR=fedora.backup.tar
+
+# diretório de backup (utilizado pelos scripts salvar e restaurar)
+case $USER in
+    vagrant) BACKUP_DIR=backup;;
+    *) BACKUP_DIR=`basename "$BASEDIR.backup"`;;
+esac

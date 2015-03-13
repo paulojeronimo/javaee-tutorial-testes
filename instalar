@@ -23,11 +23,6 @@ export all_proxy=$http_proxy
 _EOF
 fi
 
-#sudo yum -y update
-#sudo yum -y install rsync tar unzip wget git tree dos2unix lsof redhat-lsb-core vim
-#curl -sSL https://satya164.github.io/fedy/fedy-installer | sudo bash
-#sudo fedy -e oracle_jdk
-
 if [ $USER != vagrant ]
 then
     sudo useradd -m -s /bin/bash -G wheel $AMBIENTE_USER &> /dev/null || {
@@ -66,6 +61,12 @@ fi
 
 executar_e_inserir_no_bashrc "export INSTALA_OPCS+=\" $BAIXA_ARQUIVO\""
 
+[ \$USER = vagrant ] && {
+sudo yum -y update
+sudo yum -y install rsync tar unzip wget git tree dos2unix lsof redhat-lsb-core vim patch
+"$BASEDIR"/instalar-oracle_jdk
+}
+
 git clone $GITHUB_DOTFILES
 ${GITHUB_DOTFILES##*/}/install
 
@@ -85,6 +86,10 @@ _EOF
 }
 
 ${GITHUB_AMBIENTE##*/}/instalar
+
+[ \$USER = vagrant ] && {
+sudo shutdown -r now
+}
 EOF
 
 # vim: set ts=4 sw=4 expandtab:

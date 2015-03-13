@@ -6,8 +6,6 @@ BASEDIR=$(cd "$(dirname "$0")"; echo -n $PWD)
 source "$BASEDIR"/config || exit 1
 source "$BASEDIR"/defaults || exit 1
 
-BACKUP_DIR=`basename $BASEDIR`.backup
-
 [ $USER = vagrant ] && {
     sudo tar cvfP "/$BACKUP_DIR/$VAGRANT_BACKUP_TAR" /var/cache
     sudo tar rvfP "/$BACKUP_DIR/$VAGRANT_BACKUP_TAR" /fedy_dl

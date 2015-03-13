@@ -18,6 +18,8 @@
 :oracle-jre-uri: http://www.oracle.com/technetwork/java/javase/downloads/index.html
 :oracle-jdk-uri: http://www.oracle.com/technetwork/java/javase/downloads/index.html
 :javaee-ambiente-uri: https://github.com/paulojeronimo/javaee-ambiente
+:vagrant-uri: https://www.vagrantup.com/
+:virtualbox-uri: https://www.virtualbox.org/
 
 == Introdução
 
@@ -29,7 +31,7 @@ O conteúdo deste material foi projetado para ser apresentado, presencialmente p
 
 == O que você precisa saber
 
-Os roteiros deste material foram produzidos para a execução, inicialmente, num ambiente Linux ({fedora-uri}[Fedora 21]). Seu desenvolvimento foi realizado com base na instalação padrão de uma `workstation` nessa versão do Fedora. Contudo, esses roteiros também podem ser facilmente adaptados para a execução em outras distribuições Linux (como RHEL, CentOS, Debian ou Ubuntu) assim como no OS X e no Windows (num shell Cygwin). Para executar as tarefas deste material, espera-se que o estudante tenha facilidade para compreender e executar scripts no Bash.
+Os roteiros deste material foram produzidos para a execução, inicialmente, num ambiente Linux ({fedora-uri}[Fedora 21]). Seu desenvolvimento foi realizado com base na instalação padrão de uma `workstation` nessa versão do Fedora numa máquina real ou numa `box` {vagrant-uri}[Vagrant]. Contudo, esses roteiros também podem ser facilmente adaptados para a execução em outras distribuições Linux (como RHEL, CentOS, Debian ou Ubuntu) assim como no OS X e no Windows (num shell Cygwin). Para executar as tarefas deste material, espera-se que o estudante tenha facilidade para compreender e executar scripts no Bash.
 
 Os exemplos de código apresentados neste material são, primariamente, escritos em Java e JavaScript. Obviamente, acredita-se que o estudante já tenha experiência nessas linguagens. Da mesma forma, o estudo detalhado das tecnologias testadas nos exemplos discutidos neste material está fora de seu escopo. Portanto, julga-se que o estudante já possua conhecimentos nas APIs e frameworks Java/Javascript que são alvo dos códigos de teste (exemplos: JPA, EJB, JAX-RS, AngularJS, etc).
 
@@ -37,9 +39,11 @@ Espera-se que o estudante, ao iniciar a leitura deste material, já possua algum
 
 == Instalando e configurando o Fedora
 
-Está fora do escopo deste material apresentar um passo a passo completo para a instalação do Fedora. Na Internet há vários materiais a respeito disso. Entretanto, após instalado, o estudante deverá se certificar de fazer configurações e instalações de pacotes recomendadas neste tópico.
+Está fora do escopo deste material apresentar um passo a passo completo para a instalação do Fedora e, por isso, sugerimos a utilização do Vagrant caso haja dificuldades nessa instalação. Em todo caso, na Internet há vários materiais a respeito disso e, após instalado, o estudante deverá se certificar de ter realizado as configurações e instalações de pacotes recomendadas neste tópico caso não esteja utilizando o Vagrant.
 
-=== Configurando o arquivo /etc/sudoers
+=== Configurando o Fedora numa máquina real
+
+==== Configurando o arquivo /etc/sudoers
 
 Para que a execução de scripts dependentes do uso do comando `sudo` não fique solicitando uma senha, é preciso que o arquivo `/etc/sudoers` contenha linhas configuradas conforme a saída apresentada na execução do comando abaixo:
 
@@ -58,7 +62,7 @@ Para editar esse arquivo, deixando-o escrito da forma acima, execute:
 sudo visudo
 ----
 
-=== Trabalhando com o Fedora mais atual
+==== Trabalhando com o Fedora mais atual
 
 Todos os roteiros deste tutorial foram desenvolvidos com a versão mais atual dos pacotes do Fedora. Então, para ter estas mesmas versões em teu ambiente, execute o `update` dos pacotes. Se, antes desse passo, você desejar manter o cache dos pacotes que serão baixados em tua máquina, execute:
 
@@ -89,7 +93,7 @@ Logue-se com o teu usuário e, para manter apenas o kernel mais novo na lista de
 sudo package-cleanup -y --oldkernels --count=1
 ----
 
-=== Instalando pacotes contendo utilitários que serão executados pelos scripts deste tutorial
+==== Instalando pacotes contendo utilitários que serão executados pelos scripts deste tutorial
 
 Os scripts que você executará mais a frente necessitam da instalação de alguns pacotes de utilitários. Então, execute a seguinte instrução:
 
@@ -98,7 +102,7 @@ Os scripts que você executará mais a frente necessitam da instalação de algu
 sudo yum -y install vim redhat-lsb-core patch
 ----
 
-=== Instalando o Oracle JDK
+==== Instalando o Oracle JDK
 
 Alguns sites, como os do http://www.bb.com.br[Banco do Brasil] e do http://www.itau.com.br[Itaú], dependem da instalação do {oracle-jre-uri}[Oracle JRE]. Então, é interessante ter esta JRE instalada. E, apesar do OpenJDK fazer parte da instalação padrão do Fedora 21, utilizaremos o {oracle-jdk-uri}[Oracle JDK], neste material.
 
@@ -124,7 +128,7 @@ sudo alternatives --set libjavaplugin.so.x86_64 /usr/java/latest/jre/lib/amd64/l
 
 Pronto, agora testemos a execução de applets Java acessando a página https://www.java.com/pt_BR/download/installed.jsp["Verificar Versão do Java"] e também os sites dos bancos brasileiros.
 
-=== Utilizando o Fedy para instalar softwares proprietários
+==== Utilizando o Fedy para instalar softwares proprietários
 
 Particularmente, eu utilizo o Fedy para que a ele realize algumas configurações no Fedora e também a instale alguns softwares proprietários. 
 
@@ -152,11 +156,41 @@ sudo fedy -e adobe_flash core_fonts dvd_playback essential_soft font_rendering g
 Durante execução do comando acima, em meu caso, ocorreram erros na tentativa de instalação de `dvd_playback`. Isso ocorreu pois não foi encontrado o pacote `libdvdcss`.
 ====
 
+=== Utilizando o Fedora numa box Vagrant
+
+A forma mais simples de iniciar a execução desse tutorial talvez seja pela execução de uma máquina virtual rodando o Fedora. Isso pode ser realizado de maneira bem rápida pelo uso do VirtualBox e do Vagrant. Nesse caso, os passos sugeridos nesse tutorial são:
+
+. Baixe e instale o {virtualbox-uri}[VirtualBox];
+. Baixe e instale o Vagrant;
+. Baixe e instale o Git;
+
+Após ter instalado essas ferramentas, clone o projeto `javaee-tutorial-testes`:
+
+[source,bash]
+----
+cd && git clone http://github.com/paulojeronimo/javaee-tutorial-testes
+cd javaee-tutorial-testes
+----
+
+Antes de iniciar a `box` Vagrant, instale o plugin `vbguest`:
+
+[source,bash]
+----
+vagrant plugin install vagrant-vbguest
+----
+
+Inicie a `box` com o comando `up` do Vagrant. Isto fará o download da `box` `chef/fedora21` (caso ela ainda não esteja no cache `~/.vagrant.d` da tua máquina) e deverá demorar um pouco dependendo da velocidade da tua Internet:
+
+[source,bash]
+----
+vagrant up
+----
+
 == Montando um ambiente para este tutorial
 
 === Baixando o JBoss EAP
 
-Clique nos links abaixo para fazer o download de alguns arquivos que utilizaremos (será solicitado um login):
+O download do JBoss EAP exige um `login` de usuário e, por isso, não é realizado de forma automática. Então, clique nos links abaixo para fazer esse download (se você não tiver uma conta em jboss.org será solicitado a criar):
 
 * http://www.jboss.org/download-manager/file/jboss-eap-6.3.0.GA.zip
 * http://www.jboss.org/download-manager/file/jboss-eap-6.3.0.GA-quickstarts.zip
@@ -171,7 +205,7 @@ cp ~/Downloads/jboss-eap-6.3.0.* !$
 
 === Criando um ambiente para a construção, execução e testes de aplicações Java EE
 
-Baixe e execute os scripts de montagem de ambiente através dos seguintes comandos:
+Se você está utilizando a `box` Vagrant desse tutorial, você já baixou o projeto `javaee-tutorial-testes`. Do contrário, faça seu download através dos seguintes comandos:
 
 [source,bash]
 ----
@@ -186,23 +220,50 @@ Crie o arquivo `config` a partir do `config.exemplo` disponibilizado:
 cp config.exemplo config
 ----
 
-O arquivo `config` contém informações sobre onde estão subprojetos utilizados neste tutorial. Se você fez forks desses projetos em tua conta no GitHub e fez adaptações neles, você poderá apontar, neste arquivo, esses teus forks.
+O arquivo `config` contém informações sobre onde estão subprojetos utilizados neste tutorial. Se você fez forks desses projetos em tua conta no GitHub e fez adaptações neles, você poderá editar esse arquivo e ajustá-lo para apontar para teus forks.
 
-Instale o ambiente:
+Instale o ambiente.
+
+Se estiver fazendo essa instalação numa máquina real, execute:
+
 [source,bash]
 ----
 ./instalar
 ----
 
-O script `instalar` criará o usuário `javaee` e instalará um ambiente completo no `$HOME` desse usuário para que você possa realizar as tarefas apresentadas neste documento. Assim que terminada a instalação, você precisará se tornar este usuário para executar quaisquer tarefas.
+Se estiver fazendo a instalação numa `box` Vagrant (ela já deverá estar em execução), comande:
+
+[source,bash]
+----
+vagrant ssh -c /vagrant/instalar
+----
+
+O script `instalar` criará o usuário `javaee` (se a instalação estiver ocorrendo numa máquina real) e instalará um ambiente completo no `$HOME` desse usuário para que você possa realizar as tarefas apresentadas neste documento. Assim que terminada a instalação, você precisará se tornar este usuário para executar quaisquer tarefas. Se a instalação estiver acontecendo numa `box` Vagrant, esse script não criará o usuário `javaee`: tudo estará no `$HOME` do próprio usuário `vagrant`.
+
+O provisionamento da máquina (real ou da `box` Vagrant) através do script `instalar` deixará a máquina pronta com todos os requisitos necessários para o início das tarefas desse tutorial. No caso da `box`, isso deverá demorar um pouco pois também será realizada a atualização dos pacotes instalados no Fedora. Esse script também fará o download de várias ferramentas que serão utilizadas neste tutorial.
+
+Se você estiver executando o script `instalar` na `box` Vagrant, ele fará o reboot da máquina quando encerrar. Isso porque pode ter havido, durante a atualização dos pacotes, um `update` do kernel. Nesse caso, serão necessários os seguintes comandos para que o VirtualBox Guest Additions volte a funcionar na `box`:
+
+[source,bash]
+----
+vagrant vbguest --do install
+vagrant reload
+----
 
 ==== Observando a estrutura construída
 
-Logue-se como usuário `javaee`:
+Se você estiver executando o Fedora fora do Vagrant, logue-se como usuário `javaee` através do seguinte comando:
 
 [source,bash]
 ----
 sudo su - javaee
+----
+
+Se, ao contrário, você estiver executando o Fedora através do Vagrant, logue-se como usuário `vagrant` através do seguinte comando:
+
+[source,bash]
+----
+vagrant ssh
 ----
 
 Observe a estrutura de diretórios/arquivos montada no $HOME deste usuário:
@@ -253,6 +314,13 @@ jboss_instalar
 ----
 
 ==== Iniciando o Eclipse e instalando o JBoss Developer Studio
+
+Se você estiver fazendo a instalação numa máquina real poderá instalar o Eclipse e o JBoss Developer Studio nela. 
+
+[NOTE]
+====
+Este tutorial ainda não foi ajustado para fazer uso de um ambiente gráfico numa `box` Vagrant e, por isso, esse tópico não se aplica nessa situação.
+====
 
 Para iniciar o Eclipse, execute:
 
@@ -967,6 +1035,10 @@ mvn test
 
 == Testes reais, utilizando o Arquillian
 
+O Arquillian possibilita que executemos nossos testes dentro de um contêiner. Os testes são _reais_, o que significa dizer que não estamos testando uma interface "mockada" e, sim, uma implementação real dessa interface que pode estar sendo executada num servidor de aplicações.
+
+Para iniciarmos o aprendizado de Arquillian, faremos uso dos exemplos disponibilizados no projeto `JBoss EAP Quickstarts`.
+
 == O projeto JBoss EAP Quickstarts
 
 * Referências:
@@ -983,7 +1055,12 @@ cd jboss-eap-6.3.0.GA-quickstarts/
 cp settings.xml ~/.m2/
 ----
 
-=== Iniciando e monitorando o log do JBoss
+=== Executando e testando a aplicação helloworld
+
+* Referências:
+** https://github.com/jboss-developer/jboss-eap-quickstarts/tree/6.3.x/helloworld
+
+==== Iniciando e monitorando o log do JBoss
 
 [source,bash]
 ----
@@ -991,12 +1068,7 @@ jboss_start
 jboss_tail &
 ----
 
-=== Executando e testando a aplicação helloworld
-
-* Referências:
-** https://github.com/jboss-developer/jboss-eap-quickstarts/tree/6.3.x/helloworld
-
-==== Implatando
+==== Implantando
 
 [source,bash]
 ----
@@ -1046,26 +1118,13 @@ mvn clean install jboss-as:deploy
 
 O comando `add-user` fará a adição de um usuário que será utilizado no processo de autenticação da aplicação `tasks-rs`.
 
-==== Testando a aplicação
+==== Executandoo a aplicação
 
 ===== Criando uma tarefa
-
-Execute:
 
 [source,bash]
 ----
 curl -i -u 'quickstartUser:quickstartPwd1!' -H "Content-Length: 0" -X POST http://localhost:8080/jboss-tasks-rs/tasks/task1
-----
-
-Verifique a resposta esperada:
-
-[source]
-----
-HTTP/1.1 201 Created
-Server: Apache-Coyote/1.1
-Location: http://localhost:8080/jboss-tasks-rs/tasks/1
-Content-Length: 0
-Date: Thu, 05 Feb 2015 11:45:04 GMT
 ----
 
 ===== Apresentando a tarefa no formato XML
@@ -1100,22 +1159,280 @@ curl -u 'quickstartUser:quickstartPwd1!' -X GET http://localhost:8080/jboss-task
 
 ===== Alterando o projeto para fazer a apresentação das tarefas no formato JSON
 
+TODO
+
+==== Testando a aplicação com o Arquillian
+
+===== Testando numa instância JBoss já em execução
+
+[source,bash]
+----
+mvn clean test -Parq-jbossas-remote
+----
+
+===== Subindo uma instância JBoss apenas para executar os testes
+
+[source,bash]
+----
+jboss_stop
+mvn clean test -Parq-jbossas-managed
+----
+
+==== Entendendo como os testes com o Arquillian são escritos
+
+===== O pom.xml
+
+As linhas geradas na execução do comando abaixo demonstram a configuração realizada no `pom.xml` para a ativação do `profile` `arq-jbossas-managed`. Esse `profile`, como vimos, é utilizado na execução do Maven para a realização de testes subindo uma nova instância do JBoss. Execute:
+
+[source,bash]
+----
+sed -n '186,200p' pom.xml
+----
+
+Esta é a saída gerada:
+
+[source,xml]
+----
+        <profile>
+            <!-- An optional Arquillian testing profile that executes tests
+                in your JBoss EAP instance -->
+            <!-- This profile will start a new JBoss EAP instance, and execute
+                the test, shutting it down when done -->
+            <!-- Run with: mvn clean test -Parq-jbossas-managed -->
+            <id>arq-jbossas-managed</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.jboss.as</groupId>
+                    <artifactId>jboss-as-arquillian-container-managed</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+----
+
+As linhas de 202 a 214 apresentam a definição do `profile` `arq-jbossas-remote`.
+
+===== A estrutura de diretórios de teste
+
+-----
+$ tree src/test/
+src/test/
+|-- java
+|   `-- org
+|       `-- jboss
+|           `-- as
+|               `-- quickstarts
+|                   `-- tasksrs
+|                       |-- DefaultDeployment.java
+|                       |-- TaskDaoTest.java
+|                       `-- UserDaoTest.java
+`-- resources
+    |-- arquillian.xml
+    |-- import.sql
+    |-- META-INF
+    |   `-- test-persistence.xml
+    `-- test-ds.xml
+
+8 directories, 7 files
+-----
+
+===== O arquivo arquillian.xml
+
+Esse arquivo é utilizado para a realização de configurações no arquillian. Veja seu conteúdo:
+
+[source,bash]
+----
+vim src/test/resources/arquillian.xml
+----
+
+===== Os arquivos import.sql, test-persistence.xml e test-ds.xml
+
+Quando o JBoss encontra o arquivo `import.sql` no CLASSPATH (dentro de um pacote nesse caso) ele tenta, automaticamente, utilizar o seu conteúdo para popular a base de dados referenciada pelo Datasource configurado em `test-ds.xml`. As configurações JPA para o ambiente de teste são realizadas no arquivo `test-persistence.xml`.
+
+Veja o conteúdo de cada um desses arquivos:
+
+[source,bash]
+----
+cat src/test/resources/import.sql
+cat src/test/resources/test-ds.xml
+cat src/test/resources/META-INF/test-persistence.xml
+----
+
+===== A classe DefaultDeployment
+
+Essa classe contém métodos que serão utilizados pelo Arquillian (nos Testcases) que, através do ShrinkWrap, montaram o pacote com os recursos necessários para a execução dos testes.
+
+As linhas geradas na saída do comando abaixo apresentam os principais métodos dessa classe. Execute:
+
+[source,bash]
+----
+sed -n '36,54p' src/test/java/org/jboss/as/quickstarts/tasksrs/DefaultDeployment.java
+----
+
+Esta é a saída gerada:
+
+[source,java]
+----
+    public DefaultDeployment() {
+        webArchive = ShrinkWrap.create(WebArchive.class, "test.war").addAsWebInfResource(
+                new File(WEBAPP_SRC, "WEB-INF/beans.xml"));
+    }
+
+    public DefaultDeployment withPersistence() {
+        webArchive = webArchive.addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(
+                "test-ds.xml", "test-ds.xml");
+        return this;
+    }
+
+    public DefaultDeployment withImportedData() {
+        webArchive = webArchive.addAsResource("import.sql");
+        return this;
+    }
+
+    public WebArchive getArchive() {
+        return webArchive;
+    }
+----
+
+===== Na classe TaskDaoTest: a anotação @RunWith
+
+A anotação `@RunWith(Arquillian.class)` é utilizada para informar ao JUnit que a execução da classe de teste será realizada através do Arquillian. Essa anotação é colocada no escopo da classe, conforme apresentado na saída do comando abaixo:
+
+[source,bash]
+----
+sed -n '41,42p' src/test/java/org/jboss/as/quickstarts/tasksrs/TaskDaoTest.java
+----
+
+[source,java]
+----
+@RunWith(Arquillian.class)
+public class TaskDaoTest {
+----
+
+===== Na classe TaskDaoTest: a anotação @Deployment
+
+A anotação `@Deployment` é inserida num método estático para informar ao Arquillian o método responsável pela geração do pacote que será implantado para a realização dos testes. Antes da execução dos métodos de teste, o Arquillian se responsabiliza, através da execução desse método, de fazer o deploy de um pacote no contêiner, com todos os recursos necessários para a execução dos testes.
+
+[source,bash]
+----
+sed -n '44,48p' !$
+----
+
+[source,java]
+----
+    @Deployment
+    public static WebArchive deployment() throws IllegalArgumentException, FileNotFoundException {
+        return new DefaultDeployment().withPersistence().withImportedData().getArchive()
+                .addClasses(Resources.class, User.class, UserDao.class, Task.class, TaskDao.class, TaskDaoImpl.class);
+    }
+----
+
+===== Na classe TaskDaoTest: a anotação @InSequence
+
+A anotação `@InSequence` é particular ao Arquillian e possibilita a ordenação do fluxo de execução dos métodos anotados com `@Test` (anotação do JUnit) já que esse não oferece esta possibilidade. Então, através do uso dessa anotação podemos dizer ao JUnit a ordem em que desejamos a execução dos métodos de teste.
+
+===== Na classe TaskDaoTest: os métodos de testes
+
+Apesar de não utilizar nenhuma ferramenta para BDD, os métodos de teste na classe `TaskDaoTest` são codificados seguem essa abordagem. No código é possível observamos comentários indicando o que seria o "given", o "when" e o "then". Além disso, os nomes dos métodos são bastante significativos. Observemos alguns:
+
+Código de teste para "um usuário deveria ser criado com uma tarefa anexada":
+
+[source,bash]
+----
+sed -n '64,80p' !$
+----
+
+[source,java]
+----
+    @Test
+    @InSequence(1)
+    public void user_should_be_created_with_one_task_attached() throws Exception {
+        // given
+        User user = new User("New user");
+        Task task = new Task("New task");
+
+        // when
+        em.persist(user);
+        taskDao.createTask(user, task);
+        List<Task> userTasks = em.createQuery("SELECT t FROM Task t WHERE t.owner = :owner", Task.class)
+                .setParameter("owner", user).getResultList();
+
+        // then
+        assertEquals(1, userTasks.size());
+        assertEquals(task, userTasks.get(0));
+    }
+----
+
+Código de teste para "uma faixa de tarefas deveria ser provida por taskDao":
+
+[source,bash]
+----
+sed -n '92,104p'!$
+----
+
+[source,java]
+----
+    @Test
+    @InSequence(3)
+    public void range_of_tasks_should_be_provided_by_taskDao() {
+        // when
+        List<Task> headOfTasks = taskDao.getRange(detachedUser, 0, 1);
+        List<Task> tailOfTasks = taskDao.getRange(detachedUser, 1, 1);
+
+        // then
+        assertEquals(1, headOfTasks.size());
+        assertEquals(1, tailOfTasks.size());
+        assertTrue(headOfTasks.get(0).getTitle().contains("first"));
+        assertTrue(tailOfTasks.get(0).getTitle().contains("second"));
+    }
+----
+
 === Executando e testando a aplicação kitchensink-angularjs
+
+O projeto kitchensink-angularjs demonstra o uso das tecnologias AngularJS e JAX-RS e, além disso, apresenta um bom código para o estudo do Arquillian.
+
+Ele é implantável com o Maven, utiliza Java EE 6 e as APIs CDI 1.0, EJB 3.1, JPA 2.0 e Bean Validation 1.0.
 
 * Referências:
 ** http://www.jboss.org/quickstarts/wfk/kitchensink-angularjs/
 
 ==== Baixando o projeto
 
+[source,bash]
+----
+cd ~/exemplos
+git clone https://github.com/jboss-developer/jboss-wfk-quickstarts
+cd jboss-wfk-quickstarts/kitchensink-angularjs
+----
+
 ==== Construindo e implantando
+
+[source,bash]
+----
+mvn clean package jboss-as:deploy
+----
 
 ==== Acessando a aplicação
 
-==== Desimplantando
+Abra a URL http://localhost:8080/jboss-kitchensink-angularjs/
 
 ==== Executando os testes com o Arquillian
 
+[source,bash]
+----
+mvn clean test -Parq-jbossas-remote
+----
+
+==== Executando testes funcionais com o Arquillian
+
 ==== Depurando a aplicação
+
+==== Desimplantando
+
+[source,bash]
+----
+mvn jboss-as:undeploy
+----
 
 == Utilizando JBoss Forge e Arquillian
 
@@ -1144,6 +1461,9 @@ curl -u 'quickstartUser:quickstartPwd1!' -X GET http://localhost:8080/jboss-task
 ** http://arquillian.org/guides/testing_java_persistence/
 
 === Testando componentes EJB
+
+* Referências:
+** http://arquillian.org/guides/getting_started_rinse_and_repeat_pt/
 
 === Testando web services REST
 

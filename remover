@@ -28,3 +28,5 @@ sudo userdel -rf $AMBIENTE_USER &> /dev/null || {
 
 f=~/.bashrc; e="^xhost.*$AMBIENTE_USER$"
 grep -q "$e" $f && { grep -v "$e" $f | tee $f > /dev/null; }
+
+# vim: set ts=4 sw=4 expandtab:
